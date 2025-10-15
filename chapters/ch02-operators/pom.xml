@@ -1,0 +1,22 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>it.tb.training</groupId>
+    <artifactId>ocp-java17-course</artifactId>
+    <version>1.0.0</version>
+    <relativePath>../../pom.xml</relativePath>
+  </parent>
+  <artifactId>ch02-operators</artifactId>
+  <name>ch02-operators</name>
+  <properties>
+    <maven.compiler.release>17</maven.compiler.release>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
