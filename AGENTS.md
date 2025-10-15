@@ -21,6 +21,7 @@ Ensure every chapter of the OCP Java 17 course is created or updated with a cons
    - Include a short “Run the Examples” subsection that explains how to execute the chapter’s demos (for example, `java -cp …` or the relevant Maven test command).
    - Keep language concise; use bullet lists and code fences when helpful.
    - Update the root `TOC.md` so the new chapter appears in the table of contents.
+   - Link practical exercises directly to the book snippets implemented under `src/main/java/chXX/examples`.
 5. **Plan examples and tests**
    - Define source paths inside the Maven module (`src/main/java/...`, `src/test/java/...`).
    - Examples must reflect the chapter content; base them on code from the book where possible.
@@ -39,10 +40,17 @@ Ensure every chapter of the OCP Java 17 course is created or updated with a cons
    - Use `git status` to confirm tracked changes.
    - Summarise modifications and suggest next actions (for example, additional exercises or commits).
 
+## Book Example Policy
+- Every chapter module must mirror the official study guide listings: extract each grey-box code sample and reproduce it under `src/main/java/chXX/examples/`.
+- Do not invent bespoke utilities unless the book provides them; prefer verbatim code (adjusting only for package names or minimal tweaks required for compilation).
+- For each extracted snippet, create a lightweight JUnit test in `src/test/java/chXX/examples/` that confirms the behaviour described in the text.
+- When new chapters are added, iterate through the PDF to capture all relevant examples before writing additional material.
+
 ## Consistency notes
 - Every chapter must be reproducible by following the steps above, regardless of the agent or session.
 - Always reference chapter concepts (tooling, code, quizzes) in the README.
 - Keep the root `TOC.md` aligned with the list of chapter modules.
+- Ensure every chapter’s `examples` package stays in sync with the grey-box listings from the book.
 - Make sure each chapter README explains how to run the provided examples or associated tests.
 - Do not overwrite user changes that are out of scope; coordinate when conflicts arise.
 - Maintain English across documents, code comments, test names, and quiz content.
@@ -50,6 +58,7 @@ Ensure every chapter of the OCP Java 17 course is created or updated with a cons
 ## Quick checklist before finishing
 - [ ] README updated with the standard structure in English, including “Run the Examples”.
 - [ ] Root `TOC.md` updated with the chapter entry.
+- [ ] Book snippets extracted into `src/main/java/chXX/examples` with matching tests.
 - [ ] Example code present under `src/main/java`.
 - [ ] JUnit tests present under `src/test/java` and passing.
 - [ ] Build/test output captured in the final handover message.
