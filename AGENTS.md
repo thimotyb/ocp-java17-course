@@ -20,6 +20,7 @@ Ensure every chapter of the OCP Java 17 course is created or updated with a cons
    - Follow the standard structure: Learning Objectives → Chapter Summary with sub-sections → Practical Exercises → Exam Prep (questions + answers) → Next Steps.
    - Include a short “Run the Examples” subsection that explains how to execute the chapter’s demos (for example, `java -cp …` or the relevant Maven test command).
    - Keep language concise; use bullet lists and code fences when helpful.
+   - Update the root `TOC.md` so the new chapter appears in the table of contents.
 5. **Plan examples and tests**
    - Define source paths inside the Maven module (`src/main/java/...`, `src/test/java/...`).
    - Examples must reflect the chapter content; base them on code from the book where possible.
@@ -41,12 +42,14 @@ Ensure every chapter of the OCP Java 17 course is created or updated with a cons
 ## Consistency notes
 - Every chapter must be reproducible by following the steps above, regardless of the agent or session.
 - Always reference chapter concepts (tooling, code, quizzes) in the README.
+- Keep the root `TOC.md` aligned with the list of chapter modules.
 - Make sure each chapter README explains how to run the provided examples or associated tests.
 - Do not overwrite user changes that are out of scope; coordinate when conflicts arise.
 - Maintain English across documents, code comments, test names, and quiz content.
 
 ## Quick checklist before finishing
 - [ ] README updated with the standard structure in English, including “Run the Examples”.
+- [ ] Root `TOC.md` updated with the chapter entry.
 - [ ] Example code present under `src/main/java`.
 - [ ] JUnit tests present under `src/test/java` and passing.
 - [ ] Build/test output captured in the final handover message.
