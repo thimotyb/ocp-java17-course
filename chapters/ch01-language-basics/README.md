@@ -45,10 +45,11 @@
 - `System.gc()` is only a hint; the JVM decides if and when to trigger the collector.
 
 ## Practical Exercises
-1. **Toolchain and single-file launch** – In `src/main/java/ch01/HelloZoo.java`, create a `main` method that prints the paths to `javac`, `java`, `jar`, and `javadoc` using `ProcessBuilder`. Run it with both (`javac` + `java`) and `java HelloZoo.java`.
-2. **Packages and imports** – Under `ch01.randomizer`, create a `NumberPicker` class that uses both `java.util.Random` and `java.util.concurrent.ThreadLocalRandom`. Demonstrate the difference between specific imports and fully qualified names, plus a supporting JUnit test.
-3. **`var`, scope, and initialization** – In `ch01.scope.ScopePlayground`, implement methods that highlight correct `var` usage, nested blocks accessing outer variables, and (commented) compilation failures for uninitialized or out-of-scope variables. Back the examples with unit tests.
-4. **Wrappers and multiline output** – Implement a `MetricsFormatter` utility that accepts primitive and wrapper values, leverages `valueOf`/conversion methods, and returns a multi-line formatted report. Verify that numeric literals with underscores and conversions behave as expected.
+1. **Class anatomy** – Explore `Animal`, `VisitorCounter`, and `Chicken` under `ch01.examples` to review fields, accessors, and constructors. Extend them with additional getters and constructor logic.
+2. **Main methods and arguments** – Run `Zoo` and `ZooArguments` to observe entry points and CLI parameters. Experiment with optional modifiers (`final`) and missing arguments.
+3. **Imports and random numbers** – Inspect `NumberPicker` to see how explicit imports resolve `Random`. Replace the star import with specific class imports and verify behaviour with tests.
+4. **Initialization order and scope** – Study `Egg`, `Bird`, `NameTag`, and `Mouse` to follow field initialization, instance initializers, and variable scope. Modify the classes to see how execution order changes.
+5. **Local variable type inference** – Execute `ZooVar` and alter the `var` declarations to reinforce the compile-time rules about inference.
 
 ## Run the Examples
 ```bash
@@ -59,11 +60,13 @@ sdk use java 17.0.14-tem
 # Compile the module
 mvn -pl chapters/ch01-language-basics compile
 
-# Run the HelloZoo demo (prints tool locations)
-java -cp chapters/ch01-language-basics/target/classes ch01.HelloZoo
+# Run the book snippets
+java -cp chapters/ch01-language-basics/target/classes ch01.examples.Zoo
+java -cp chapters/ch01-language-basics/target/classes ch01.examples.ZooArguments Bronx Zoo
+java -cp chapters/ch01-language-basics/target/classes ch01.examples.NumberPicker
 
-# Explore other classes through tests
-mvn -pl chapters/ch01-language-basics -Dtest=ScopePlaygroundTest test
+# Execute the focused tests that mirror the chapter
+mvn -pl chapters/ch01-language-basics -Dtest='ch01.examples.*Test' test
 ```
 
 ## Exam Prep (1Z0-829 style)
@@ -121,6 +124,6 @@ mvn -pl chapters/ch01-language-basics -Dtest=ScopePlaygroundTest test
 </details>
 
 ## Next Steps
-- Populate the exercises under `src/main/java` and `src/test/java` with the proposed implementations.
-- Run `mvn -pl chapters/ch01-language-basics test` to verify the module once examples are in place.
-- Extend with optional exercises on `System.gc()` hints and formatting multiline output with text blocks once a Java 17 toolchain is available.
+- Map additional grey-box snippets from the book (for example, `Park`, `Chick`, `Swan`) into the module as you progress.
+- Keep the accompanying tests in `ch01.examples` aligned with the source listings so you can verify behaviour quickly.
+- Experiment with variations (adding packages, alternative imports) while preserving the original book examples for reference.

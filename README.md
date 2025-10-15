@@ -59,16 +59,17 @@ mvn -pl chapters/ch01-language-basics test
 ```
 
 ## Run the Examples
-Compiled classes live in `target/classes` inside each module. For chapter 1 you can launch the `HelloZoo` demo with:
+Compiled classes live in `target/classes` inside each module. For chapter 1 you can launch the snippets straight from the book:
 ```bash
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk use java 17.0.14-tem
 mvn -pl chapters/ch01-language-basics compile
-java -cp chapters/ch01-language-basics/target/classes ch01.HelloZoo
+java -cp chapters/ch01-language-basics/target/classes ch01.examples.Zoo
+java -cp chapters/ch01-language-basics/target/classes ch01.examples.ZooArguments Bronx Zoo
 ```
-Any example without a `main` method (for example `NumberPicker`, `ScopePlayground`, `MetricsFormatter`) is exercised through the accompanying JUnit tests:
+Other listings without a `main` method (for example `Animal`, `Mouse`, `Egg`) are exercised through the accompanying `ch01.examples.*Test` classes:
 ```bash
-mvn -pl chapters/ch01-language-basics -Dtest=NumberPickerTest test
+mvn -pl chapters/ch01-language-basics -Dtest='ch01.examples.*Test' test
 ```
 Refer to each chapter README for additional entry points or usage notes.
 
