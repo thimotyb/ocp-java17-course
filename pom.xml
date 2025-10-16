@@ -19,6 +19,7 @@
     <module>chapters/ch10-streams</module>
     <module>chapters/ch11-exceptions-localization</module>
     <module>chapters/ch12-modules</module>
+    <module>chapters/ch13-concurrency</module>
   </modules>
 
   <properties>
