@@ -1,0 +1,197 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Chapter 5 – Methods</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/moon.css" id="theme">
+    <style>
+      :root {
+        --r-background-color: #0b132b;
+        --r-main-color: #f0f4f8;
+        --r-heading-color: #118ab2;
+        --r-link-color: #ffd166;
+        --r-link-color-hover: #ef476f;
+        --r-selection-background-color: #ef476f;
+        --r-main-font: 'Segoe UI', 'Helvetica Neue', sans-serif;
+        --r-heading-font: 'Poppins', 'Helvetica Neue', sans-serif;
+        --r-heading-text-shadow: none;
+        --r-main-font-size: 30px;
+      }
+      .reveal section ul {
+        margin-left: 0;
+      }
+      .reveal section h3 {
+        margin-bottom: 0.6em;
+      }
+      .reveal section .two-column {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.2rem;
+      }
+      .reveal section code {
+        font-size: 0.9em;
+      }
+      .code-link {
+        margin-top: 0.8em;
+        font-size: 0.8em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h2>Chapter 5 &ndash; Methods</h2>
+          <p style="font-size:0.95em">OCP Java SE 17 Study Guide &bull; Declarations, access control, varargs, and overloading</p>
+          <ul>
+            <li>Compose valid method signatures with the correct modifier order</li>
+            <li>Manage local, instance, static, and final variables inside method bodies</li>
+            <li>Control access across packages and inheritance hierarchies</li>
+            <li>Resolve overloading choices, varargs calls, and autoboxing interactions</li>
+          </ul>
+          <p class="code-link"><a href="../../chapters/ch05-methods" target="_blank">Hands-on examples: chapters/ch05-methods</a></p>
+        </section>
+
+        <section>
+          <h3>Method Declaration Blueprint</h3>
+          <ul>
+            <li>Order matters: access modifier(s) → optional specifiers → return type → name → parameter list → optional `throws` → body</li>
+            <li>The method signature is just the name plus parameter types/order; return type and modifiers don’t affect uniqueness</li>
+            <li>Omitting the body is only legal for abstract/interface methods (not covered until later chapters)</li>
+            <li>Identifiers follow Java naming rules&mdash;no leading digits, spaces, or keywords</li>
+          </ul>
+          <p class="code-link">Blueprint illustrated in <a href="../../chapters/ch05-methods/src/main/java/ch05/examples/MethodDeclarationExamples.java" target="_blank">MethodDeclarationExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Access Modifiers &amp; Specifiers</h3>
+          <ul>
+            <li>`public`, `protected`, package access (no keyword), and `private` govern visibility from other classes and packages</li>
+            <li>Optional specifiers like `static`, `final`, `abstract`, and `synchronized` precede the return type when present</li>
+            <li>Order of modifiers is flexible, but all must appear before the return type (`public static final void run()` is valid)</li>
+            <li>Invalid keywords (e.g., `default` as an access modifier or `modifier`) cause compilation failures</li>
+          </ul>
+          <p class="code-link">Valid/invalid combinations catalogued in <a href="../../chapters/ch05-methods/src/main/java/ch05/examples/MethodDeclarationExamples.java" target="_blank">MethodDeclarationExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Return Types &amp; Control Flow</h3>
+          <ul>
+            <li>`void` methods may use `return;` for early exit but cannot return a value</li>
+            <li>Non-void methods must return a value along every execution path; the compiler enforces coverage</li>
+            <li>Returned expressions must be assignable to the declared return type without narrowing</li>
+            <li>Exception-throwing branches still satisfy return requirements when no further code follows</li>
+          </ul>
+          <p class="code-link">Return rules demonstrated in <a href="../../chapters/ch05-methods/src/main/java/ch05/examples/MethodDeclarationExamples.java" target="_blank">MethodDeclarationExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Parameters &amp; Local Variables</h3>
+          <ul>
+            <li>Local variables must be explicitly initialised before first use; the compiler tracks definite assignment</li>
+            <li>`final` locals can be assigned once; effectively final locals (never reassigned) work with lambdas and inner classes</li>
+            <li>Method parameters are copies (pass-by-value) but can reference mutable objects</li>
+            <li>`final` instance fields must be set exactly once via declarations, initialiser blocks, or constructors</li>
+          </ul>
+          <p class="code-link">Local vs instance handling in <a href="../../chapters/ch05-methods/src/main/java/ch05/examples/MethodDeclarationExamples.java" target="_blank">MethodDeclarationExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Varargs Rules</h3>
+          <ul>
+            <li>At most one varargs parameter per method, and it must appear last (`void walk(int start, int... steps)`)</li>
+            <li>Calls can omit varargs entirely, pass individual arguments, or supply an array</li>
+            <li>Varargs parameters are treated as arrays at runtime; `length` reveals how many arguments were supplied</li>
+            <li>Overloads differing only by array vs varargs can lead to ambiguous calls; prefer a single idiom</li>
+          </ul>
+          <p class="code-link">Examples and edge cases in <a href="../../chapters/ch05-methods/src/main/java/ch05/examples/VarargsExamples.java" target="_blank">VarargsExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Pass-by-Value Semantics</h3>
+          <ul>
+            <li>Java always passes arguments by value; reassignment of a parameter never updates the caller’s variable</li>
+            <li>Mutating the object referenced by a parameter does affect the caller because both refer to the same object</li>
+            <li>Wrapper classes and `String` are immutable; attempted mutation requires reassignment to capture the new value</li>
+            <li>Return mutated objects when you want the caller to observe changes explicitly</li>
+          </ul>
+          <p class="code-link">Behaviour shown in <a href="../../chapters/ch05-methods/src/main/java/ch05/examples/PassingDataExamples.java" target="_blank">PassingDataExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Overloading &amp; Resolution Order</h3>
+          <ul>
+            <li>Overloaded methods must differ by parameter list (number, types, or order); return type alone is insufficient</li>
+            <li>Resolution preference: exact match → wider primitive conversion → autoboxing/unboxing → varargs</li>
+            <li>Autoboxing does not perform implicit narrowing (e.g., `short` → `Short` beats `int` → `Integer` before `varargs`)</li>
+            <li>Checked exceptions on overloads factor into compile-time selection when applicable</li>
+          </ul>
+          <p class="code-link">Resolution puzzles in <a href="../../chapters/ch05-methods/src/main/java/ch05/examples/OverloadingExamples.java" target="_blank">OverloadingExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Access Control in Practice</h3>
+          <ul>
+            <li>Package-private members are visible only inside the same package (`pond.duck` vs `pond.goose` examples)</li>
+            <li>`protected` members are accessible to subclasses even across packages, but only through the subclass reference</li>
+            <li>Attempting to call a protected member on a superclass reference outside the package fails to compile</li>
+            <li>Use helper classes to illustrate which combinations succeed (`FatherDuck`, `GooseWatcher`, `Swan`)</li>
+          </ul>
+          <p class="code-link">Visibility scenarios in <a href="../../chapters/ch05-methods/src/main/java/ch05/examples/pond/duck/FatherDuck.java" target="_blank">FatherDuck.java</a>, <a href="../../chapters/ch05-methods/src/main/java/ch05/examples/pond/goose/GooseWatcher.java" target="_blank">GooseWatcher.java</a>, and <a href="../../chapters/ch05-methods/src/main/java/ch05/examples/pond/swan/Swan.java" target="_blank">Swan.java</a></p>
+        </section>
+
+        <section>
+          <h3>Static Members &amp; Initialisers</h3>
+          <ul>
+            <li>`static` methods and fields belong to the class; call them via the class name to emphasise intent</li>
+            <li>Instance members require an object reference, even when accessed from static contexts</li>
+            <li>`static` initialiser blocks run once when the class loads and can perform multi-step constant configuration</li>
+            <li>`static final` fields act as constants and must be assigned exactly once (at declaration or in a static block)</li>
+          </ul>
+          <p class="code-link">Class-level members in <a href="../../chapters/ch05-methods/src/main/java/ch05/examples/StaticExamples.java" target="_blank">StaticExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Static Imports &amp; Namespace Hygiene</h3>
+          <ul>
+            <li>`import static` brings static members into scope; use sparingly to preserve readability</li>
+            <li>Wildcard static imports (`import static java.util.Arrays.*;`) pull in all static members of a type</li>
+            <li>Conflicting static imports from different classes cause compile errors; qualify the call instead</li>
+            <li>Static imports apply only to members, not to packages or classes themselves</li>
+          </ul>
+          <p class="code-link">Illustrated in <a href="../../chapters/ch05-methods/src/main/java/ch05/examples/ImportExamples.java" target="_blank">ImportExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Key Takeaways</h3>
+          <ul>
+            <li>Memorise the legal sequence of modifiers and ensure every execution path returns the declared type</li>
+            <li>Understand how pass-by-value interacts with mutable vs immutable objects</li>
+            <li>Apply the overload selection order to predict which method Java chooses (exact → wider → boxing → varargs)</li>
+            <li>Use access modifiers and `protected` carefully when crossing package boundaries</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Further Exploration</h3>
+          <p style="font-size:0.9em">Extend these patterns into class design and inheritance in the following chapters.</p>
+          <ul>
+            <li><a href="../../chapters/ch05-methods" target="_blank">Chapter 5 module</a> &mdash; declarations, access-control labs, and overloading demos</li>
+            <li><a href="../../chapters" target="_blank">Chapters directory</a> for the next topics in the certification roadmap</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+        transition: 'slide'
+      });
+    </script>
+  </body>
+</html>

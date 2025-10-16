@@ -1,0 +1,197 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Chapter 3 – Making Decisions</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/moon.css" id="theme">
+    <style>
+      :root {
+        --r-background-color: #0b132b;
+        --r-main-color: #f0f4f8;
+        --r-heading-color: #ef476f;
+        --r-link-color: #06d6a0;
+        --r-link-color-hover: #ffd166;
+        --r-selection-background-color: #ffd166;
+        --r-main-font: 'Segoe UI', 'Helvetica Neue', sans-serif;
+        --r-heading-font: 'Poppins', 'Helvetica Neue', sans-serif;
+        --r-heading-text-shadow: none;
+        --r-main-font-size: 30px;
+      }
+      .reveal section ul {
+        margin-left: 0;
+      }
+      .reveal section h3 {
+        margin-bottom: 0.6em;
+      }
+      .reveal section .two-column {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.2rem;
+      }
+      .reveal section code {
+        font-size: 0.9em;
+      }
+      .code-link {
+        margin-top: 0.8em;
+        font-size: 0.8em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h2>Chapter 3 &ndash; Making Decisions</h2>
+          <p style="font-size:0.95em">OCP Java SE 17 Study Guide &bull; Control flow, pattern matching, and loops</p>
+          <ul>
+            <li>Enforce boolean guards on `if` statements and keep scopes explicit</li>
+            <li>Combine pattern matching with decision constructs safely</li>
+            <li>Select between classic `switch` statements and modern switch expressions</li>
+            <li>Orchestrate loops, labels, and early exits without hidden side effects</li>
+          </ul>
+          <p class="code-link"><a href="../../chapters/ch03-making-decisions" target="_blank">Hands-on examples: chapters/ch03-making-decisions</a></p>
+        </section>
+
+        <section>
+          <h3>Control Flow Building Blocks</h3>
+          <ul>
+            <li>Every decision targets a single statement or a braced block&mdash;indentation alone never scopes code</li>
+            <li>`if` requires a boolean expression; numeric placeholders like `if(1)` fail to compile</li>
+            <li>Prefer braces even for one-line branches to prevent “dangling” statements during maintenance</li>
+            <li>Local counters live only inside their block; reinitialise or hoist them when needed elsewhere</li>
+          </ul>
+          <p class="code-link">See block structure in <a href="../../chapters/ch03-making-decisions/src/main/java/ch03/examples/IfExamples.java" target="_blank">IfExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Pattern Matching with <code>instanceof</code></h3>
+          <ul>
+            <li>Java 16+ binds a typed pattern on success: `if (obj instanceof String s)` both tests and casts</li>
+            <li>Combine with boolean guards (`&& s.length() > 3`) to keep the smart-cast in scope</li>
+            <li>Negated patterns flip eligibility; once a pattern fails, the variable is out of scope for subsequent branches</li>
+            <li>Pattern variables are effectively final and cannot be reassigned inside the guarded block</li>
+          </ul>
+          <p class="code-link">Pattern guards illustrated in <a href="../../chapters/ch03-making-decisions/src/main/java/ch03/examples/FishTank.java" target="_blank">FishTank.java</a></p>
+        </section>
+
+        <section>
+          <h3><code>if/else</code> Chains &amp; Pitfalls</h3>
+          <ul>
+            <li>Chains execute top to bottom; the first `true` branch short-circuits the remainder</li>
+            <li>Assignments inside conditions (`if (flag = true)`) compile and often signal bugs&mdash;prefer `==`</li>
+            <li>Unbraced `if`/`else` pairs bind to the nearest preceding `if`; visually align braces to avoid surprises</li>
+            <li>Nested blocks inherit outer scope variables but may shadow them; name carefully</li>
+          </ul>
+          <p class="code-link">Order and scope shown in <a href="../../chapters/ch03-making-decisions/src/main/java/ch03/examples/IfExamples.java" target="_blank">IfExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Classic <code>switch</code> Statement</h3>
+          <ul>
+            <li>Supports `byte`, `short`, `char`, `int`, their wrappers, `enum`, and `String`; `long` and `boolean` are disallowed</li>
+            <li>`case` labels must be compile-time constants convertible to the switch type and unique after evaluation</li>
+            <li>Fall-through occurs until a `break`, `return`, or `throw`; `default` may appear anywhere but runs at most once</li>
+            <li>The compiler rejects unreachable cases (e.g., duplicates or ranges already covered)</li>
+          </ul>
+          <p class="code-link">Structure mirrored in <a href="../../chapters/ch03-making-decisions/src/main/java/ch03/examples/DayOfWeekStatement.java" target="_blank">DayOfWeekStatement.java</a></p>
+        </section>
+
+        <section>
+          <h3>Switch Expressions</h3>
+          <ul>
+            <li>Arrow labels (`case X ->`) evaluate exactly one expression or block; classic `case:` syntax still requires `break`</li>
+            <li>Switch expressions yield a value; terminate the construct with a semicolon when assigned</li>
+            <li>Block cases use `yield` to return a value explicitly, avoiding ambiguity with `break`</li>
+            <li>Grouping cases with commas reduces duplication and clarifies intent</li>
+          </ul>
+          <p class="code-link">Compare statement vs expression in <a href="../../chapters/ch03-making-decisions/src/main/java/ch03/examples/DayOfWeekExpression.java" target="_blank">DayOfWeekExpression.java</a></p>
+        </section>
+
+        <section>
+          <h3>Coverage, Defaults, and Guards</h3>
+          <ul>
+            <li>Switch expressions must be exhaustive; add `default` (or cover every enum constant) when branches don’t throw</li>
+            <li>Guarded patterns (`case String s when s.length() > 5 ->`) add boolean filters after type checks</li>
+            <li>Do not mix statement-style `case:` with arrow labels in the same switch</li>
+            <li>All result-yielding branches must return compatible types; the compiler enforces consistency</li>
+          </ul>
+          <p class="code-link">Arrow cases grouped in <a href="../../chapters/ch03-making-decisions/src/main/java/ch03/examples/SeasonPrinter.java" target="_blank">SeasonPrinter.java</a></p>
+        </section>
+
+        <section>
+          <h3><code>while</code> vs <code>do-while</code></h3>
+          <ul>
+            <li>`while` evaluates the guard before each iteration; the body may never execute if the test is `false`</li>
+            <li>`do-while` always runs the body once before checking the condition; terminate each loop with a semicolon</li>
+            <li>Loop conditions must be boolean; accidental assignments or numeric literals fail compilation</li>
+            <li>Keep state updates inside the loop to avoid infinite execution</li>
+          </ul>
+          <p class="code-link">Ordering demonstrated in <a href="../../chapters/ch03-making-decisions/src/main/java/ch03/examples/PrintIntegers.java" target="_blank">PrintIntegers.java</a></p>
+        </section>
+
+        <section>
+          <h3><code>for</code> Loops and Enhancements</h3>
+          <ul>
+            <li>Classic `for` has initialisation, condition, and update expressions; each section is optional but separators are required</li>
+            <li>Multiple variables may be initialised or updated when they share a type (e.g., `for (int i=0, j=10; ...)`)</li>
+            <li>Enhanced `for` (“for-each”) iterates arrays or `Iterable` types; the loop variable is effectively final</li>
+            <li>Mutating a collection while iterating with for-each can raise `ConcurrentModificationException`</li>
+          </ul>
+          <p class="code-link">Nested loops in <a href="../../chapters/ch03-making-decisions/src/main/java/ch03/examples/CleaningSchedule.java" target="_blank">CleaningSchedule.java</a></p>
+        </section>
+
+        <section>
+          <h3>Labels, <code>break</code>, and <code>continue</code></h3>
+          <ul>
+            <li>`break` exits the nearest loop or switch; `continue` skips to the next iteration</li>
+            <li>Labels prefix a statement (`label:`) and allow targeted `break label;` or `continue label;` from nested contexts</li>
+            <li>Use labels sparingly and ensure the label appears immediately before the loop you intend to affect</li>
+            <li>After a labeled `break`, control resumes after the labeled statement; `continue` restarts that loop’s next iteration</li>
+          </ul>
+          <p class="code-link">Label usage in <a href="../../chapters/ch03-making-decisions/src/main/java/ch03/examples/CleaningSchedule.java" target="_blank">CleaningSchedule.java</a> and <a href="../../chapters/ch03-making-decisions/src/main/java/ch03/examples/FindInMatrix.java" target="_blank">FindInMatrix.java</a></p>
+        </section>
+
+        <section>
+          <h3>Early Exit Strategies</h3>
+          <ul>
+            <li>`return` exits the entire method, providing an alternative to labeled breaks when you only need the result</li>
+            <li>Throwing an exception also ends control flow; ensure catch blocks handle it appropriately upstream</li>
+            <li>Reserve labeled `break` for scenarios where exceptions or returns would misrepresent intent</li>
+            <li>Document exit paths when loops contain multiple breakpoints to keep exam-style questions traceable</li>
+          </ul>
+          <p class="code-link">Return-based search in <a href="../../chapters/ch03-making-decisions/src/main/java/ch03/examples/FindInMatrixUsingReturn.java" target="_blank">FindInMatrixUsingReturn.java</a></p>
+        </section>
+
+        <section>
+          <h3>Key Takeaways</h3>
+          <ul>
+            <li>Demand boolean conditions and braces to avoid accidental fall-through or dangling statements</li>
+            <li>Memorise switch data type rules, constant requirements, and the semantics of `break`, `yield`, and `default`</li>
+            <li>Switch expressions must be exhaustive and type-consistent; pattern guards refine matches safely</li>
+            <li>Understand loop lifecycle differences and how labels, `break`, `continue`, and `return` alter control flow</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Further Exploration</h3>
+          <p style="font-size:0.9em">Deepen mastery with the full module and neighbouring chapters.</p>
+          <ul>
+            <li><a href="../../chapters/ch03-making-decisions" target="_blank">Chapter 3 module</a> &mdash; if/else, switch, pattern matching, and loop listings</li>
+            <li><a href="../../chapters" target="_blank">Chapters directory</a> to continue through the study plan</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+        transition: 'slide'
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,197 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Chapter 4 – Core APIs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/moon.css" id="theme">
+    <style>
+      :root {
+        --r-background-color: #0b132b;
+        --r-main-color: #f0f4f8;
+        --r-heading-color: #06d6a0;
+        --r-link-color: #ffd166;
+        --r-link-color-hover: #ef476f;
+        --r-selection-background-color: #ef476f;
+        --r-main-font: 'Segoe UI', 'Helvetica Neue', sans-serif;
+        --r-heading-font: 'Poppins', 'Helvetica Neue', sans-serif;
+        --r-heading-text-shadow: none;
+        --r-main-font-size: 30px;
+      }
+      .reveal section ul {
+        margin-left: 0;
+      }
+      .reveal section h3 {
+        margin-bottom: 0.6em;
+      }
+      .reveal section .two-column {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.2rem;
+      }
+      .reveal section code {
+        font-size: 0.9em;
+      }
+      .code-link {
+        margin-top: 0.8em;
+        font-size: 0.8em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h2>Chapter 4 &ndash; Core APIs</h2>
+          <p style="font-size:0.95em">OCP Java SE 17 Study Guide &bull; Strings, arrays, text blocks, and date/time</p>
+          <ul>
+            <li>Manipulate immutable `String` values and modern text-processing helpers</li>
+            <li>Leverage `StringBuilder` for in-place edits while avoiding equality traps</li>
+            <li>Model arrays, sorting, and comparison tools from `java.util.Arrays`</li>
+            <li>Create and adjust dates, times, periods, and durations in the `java.time` API</li>
+          </ul>
+          <p class="code-link"><a href="../../chapters/ch04-core-apis" target="_blank">Hands-on examples: chapters/ch04-core-apis</a></p>
+        </section>
+
+        <section>
+          <h3>String Fundamentals</h3>
+          <ul>
+            <li>Strings are immutable objects; any modifier returns a new instance</li>
+            <li>Three concatenation rules drive exam puzzles: numeric + numeric adds, any `String` operand concatenates, evaluation is strictly left-to-right</li>
+            <li>Text blocks (`"""`) produce `String` values with preserved newlines and incidental indentation</li>
+            <li>`+=` performs concatenation by reassigning the variable with the new `String`</li>
+          </ul>
+          <p class="code-link">Concatenation rules in <a href="../../chapters/ch04-core-apis/src/main/java/ch04/examples/StringExamples.java" target="_blank">StringExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>String API Toolkit</h3>
+          <ul>
+            <li>Indexing starts at 0: `length()`, `charAt()`, and `substring()` respect bounds and throw exceptions when out of range</li>
+            <li>Search helpers (`indexOf`, `contains`, `startsWith`, `endsWith`) return positional data or booleans without mutating the source</li>
+            <li>Case conversion (`toUpperCase`, `toLowerCase`) and replacement methods return new values; capture results to avoid data loss</li>
+            <li>`equals` vs `equalsIgnoreCase` differentiate exact matches from case-insensitive comparisons</li>
+          </ul>
+          <p class="code-link">Method catalogued in <a href="../../chapters/ch04-core-apis/src/main/java/ch04/examples/StringExamples.java" target="_blank">StringExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Whitespace, Formatting, &amp; Text Blocks</h3>
+          <ul>
+            <li>`strip`, `stripLeading`, `stripTrailing`, and `trim` each handle whitespace; `strip` understands Unicode</li>
+            <li>`isEmpty` checks length; `isBlank` tolerates whitespace-only strings</li>
+            <li>`indent` adjusts indentation and normalises line endings, while `stripIndent` removes incidental leading spaces</li>
+            <li>`translateEscapes` interprets escape sequences; `String.format`/`formatted` inject values with placeholders (e.g., `%s`, `%d`, `%n`)</li>
+          </ul>
+          <p class="code-link">Whitespace utilities in <a href="../../chapters/ch04-core-apis/src/main/java/ch04/examples/StringStripExamples.java" target="_blank">StringStripExamples.java</a> and text blocks in <a href="../../chapters/ch04-core-apis/src/main/java/ch04/examples/StringIndentExamples.java" target="_blank">StringIndentExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>StringBuilder in Practice</h3>
+          <ul>
+            <li>`StringBuilder` is mutable; methods like `append`, `insert`, `delete`, `replace`, and `reverse` mutate in place and return `this` for chaining</li>
+            <li>Capacity grows automatically, but you can pre-size builders to reduce reallocations</li>
+            <li>`delete` and `deleteCharAt` enforce bounds; attempts beyond length raise `StringIndexOutOfBoundsException`</li>
+            <li>`StringBuilder` does not override `equals`; compare via `toString()` when logical equality matters</li>
+          </ul>
+          <p class="code-link">Mutable operations in <a href="../../chapters/ch04-core-apis/src/main/java/ch04/examples/StringBuilderExamples.java" target="_blank">StringBuilderExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Array Fundamentals</h3>
+          <ul>
+            <li>Arrays have fixed length and homogeneous element types; declaration syntax allows brackets after the type or variable</li>
+            <li>Array variables hold references; assigning one array to another alias the same data</li>
+            <li>`length` is a field (no parentheses); index access is zero-based and checked at runtime</li>
+            <li>Array store checks occur at runtime&mdash;assigning an incompatible type through an `Object[]` reference throws `ArrayStoreException`</li>
+          </ul>
+          <p class="code-link">Declarations and aliasing in <a href="../../chapters/ch04-core-apis/src/main/java/ch04/examples/ArrayDeclarationsExamples.java" target="_blank">ArrayDeclarationsExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Sorting, Searching, Comparing</h3>
+          <ul>
+            <li>`Arrays.sort` orders primitives or objects in natural ascending order; strings sort lexicographically</li>
+            <li>`Arrays.binarySearch` requires a sorted array; unsuccessful searches return `-(insertionPoint) - 1`</li>
+            <li>`Arrays.compare` performs lexicographical comparison and returns a negative, zero, or positive result</li>
+            <li>`Arrays.mismatch` finds the first differing index or `-1` when arrays are equal</li>
+          </ul>
+          <p class="code-link">Helper methods catalogued in <a href="../../chapters/ch04-core-apis/src/main/java/ch04/examples/ArraySortSearchExamples.java" target="_blank">ArraySortSearchExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Iterating &amp; Multidimensional Arrays</h3>
+          <ul>
+            <li>Nested arrays are arrays of arrays; lengths may vary per dimension</li>
+            <li>Initialise with literals (`int[][] grid = {{1,2},{3,4}};`) or create outer arrays before inner ones</li>
+            <li>Enhanced for-loops simplify traversal but expose elements as copies for primitives and references for objects</li>
+            <li>Populate arrays in loops using indices to avoid `NullPointerException` on uninitialised inner arrays</li>
+          </ul>
+          <p class="code-link">Initialization patterns in <a href="../../chapters/ch04-core-apis/src/main/java/ch04/examples/ArrayDeclarationsExamples.java" target="_blank">ArrayDeclarationsExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Creating Date &amp; Time Objects</h3>
+          <ul>
+            <li>`LocalDate`, `LocalTime`, and `LocalDateTime` use factory methods (`of`) with 1-based months</li>
+            <li>`ZonedDateTime.of` combines date, time, and a `ZoneId`; conversions respect daylight saving transitions</li>
+            <li>Most factory methods throw exceptions when supplied invalid values (e.g., day 32 or hour 25)</li>
+            <li>Date/time objects are immutable; assign results from `plus`/`minus` operations</li>
+          </ul>
+          <p class="code-link">Creations demonstrated in <a href="../../chapters/ch04-core-apis/src/main/java/ch04/examples/DateTimeCreationExamples.java" target="_blank">DateTimeCreationExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Working with Periods &amp; Durations</h3>
+          <ul>
+            <li>`Period` models date-based amounts; `Duration` models time-based amounts down to nanoseconds</li>
+            <li>Only use `Period` with date-based types (`LocalDate`, `LocalDateTime`); applying to `LocalTime` throws `UnsupportedTemporalTypeException`</li>
+            <li>`Duration` pairs with time-based types (`LocalTime`, `LocalDateTime`); adding to `LocalDate` triggers an exception</li>
+            <li>Builder methods (`ofYears`, `ofMonths`, `ofDays`, `ofHours`, etc.) overwrite previous values when chained&mdash;store each result separately</li>
+          </ul>
+          <p class="code-link">Constraints covered in <a href="../../chapters/ch04-core-apis/src/main/java/ch04/examples/DateTimePeriodExamples.java" target="_blank">DateTimePeriodExamples.java</a> and <a href="../../chapters/ch04-core-apis/src/main/java/ch04/examples/DateTimeDurationExamples.java" target="_blank">DateTimeDurationExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Measuring &amp; Adjusting Time</h3>
+          <ul>
+            <li>`ChronoUnit.between` calculates differences and returns a long in the requested unit (hours, minutes, etc.)</li>
+            <li>`plus`/`minus` operate on immutable date/time objects and must be reassigned to keep the result</li>
+            <li>Combining periods and durations offers fine-grained schedules (e.g., monthly cadence with daily offsets)</li>
+            <li>Always confirm timezone context when mixing `LocalDateTime` with `ZoneId` to avoid unexpected offsets</li>
+          </ul>
+          <p class="code-link">Difference calculations in <a href="../../chapters/ch04-core-apis/src/main/java/ch04/examples/DateTimeDurationExamples.java" target="_blank">DateTimeDurationExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Key Takeaways</h3>
+          <ul>
+            <li>Strings are immutable; master concatenation rules and store method results to keep changes</li>
+            <li>`StringBuilder` enables in-place edits but lacks value equality; convert to `String` when comparing</li>
+            <li>Arrays demand sorted input for `binarySearch` and expose lexicographic helpers through `Arrays`</li>
+            <li>`java.time` separates date-based periods from time-based durations; mixing them incorrectly results in runtime errors</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Further Exploration</h3>
+          <p style="font-size:0.9em">Experiment with the examples and revisit earlier chapters as foundations build.</p>
+          <ul>
+            <li><a href="../../chapters/ch04-core-apis" target="_blank">Chapter 4 module</a> &mdash; Strings, builders, arrays, formatting, and date/time demos</li>
+            <li><a href="../../chapters" target="_blank">Chapters directory</a> for the full OCP Java 17 study path</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+        transition: 'slide'
+      });
+    </script>
+  </body>
+</html>
