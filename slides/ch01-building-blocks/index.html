@@ -1,0 +1,256 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Chapter 1 – Building Blocks</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/moon.css" id="theme">
+    <style>
+      :root {
+        --r-background-color: #0b132b;
+        --r-main-color: #f0f4f8;
+        --r-heading-color: #5bc0be;
+        --r-link-color: #ffd166;
+        --r-link-color-hover: #ef476f;
+        --r-selection-background-color: #ffd166;
+        --r-main-font: 'Segoe UI', 'Helvetica Neue', sans-serif;
+        --r-heading-font: 'Poppins', 'Helvetica Neue', sans-serif;
+        --r-heading-text-shadow: none;
+        --r-main-font-size: 30px;
+      }
+      .reveal section ul {
+        margin-left: 0;
+      }
+      .reveal section h3 {
+        margin-bottom: 0.6em;
+      }
+      .reveal section .two-column {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.2rem;
+      }
+      .reveal section code {
+        font-size: 0.9em;
+      }
+      .code-link {
+        margin-top: 0.8em;
+        font-size: 0.8em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h2>Chapter 1 &ndash; Building Blocks</h2>
+          <p style="font-size:0.95em">OCP Java SE 17 Study Guide &bull; Foundational Java Concepts</p>
+          <ul>
+            <li>Master the JDK toolchain for compiling and running code</li>
+            <li>Organise source with packages/imports and correct file structure</li>
+            <li>Understand primitives, references, and type inference</li>
+            <li>Manage scope and object lifetimes within the JVM</li>
+          </ul>
+          <p class="code-link"><a href="../../chapters/ch01-language-basics" target="_blank">Hands-on examples: chapters/ch01-language-basics</a></p>
+        </section>
+
+        <section>
+          <h3>JDK Toolchain Essentials</h3>
+          <ul>
+            <li><code>javac</code> compiles <code>.java</code> source into portable <code>.class</code> bytecode</li>
+            <li><code>java</code> starts the JVM, locates the entry-point class, and executes bytecode</li>
+            <li><code>jar</code> packages classes/resources; <code>javadoc</code> generates API documentation</li>
+            <li>Since Java 9, distributable runtimes can be created with <code>jlink</code> using modules you require</li>
+            <li>Set <code>CLASSPATH</code> or module path so the JVM can find dependencies at runtime</li>
+          </ul>
+          <p class="code-link">Command workflow in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/ToolchainDemo.java" target="_blank">ToolchainDemo.java</a></p>
+        </section>
+
+        <section>
+          <h3>Compilation &amp; Execution Flow</h3>
+          <div class="two-column">
+            <div>
+              <strong>Compilation</strong>
+              <ul>
+                <li>Source &rarr; <code>javac</code> &rarr; bytecode</li>
+                <li>Compiler checks syntax, types, definite assignment</li>
+                <li>Errors must be resolved before running</li>
+              </ul>
+            </div>
+            <div>
+              <strong>Execution</strong>
+              <ul>
+                <li>JVM loads classes, verifies bytecode, and executes instructions</li>
+                <li>Uses class path or module path to locate referenced types</li>
+                <li>Runtime exceptions arise while executing (e.g., <code>NullPointerException</code>)</li>
+              </ul>
+            </div>
+          </div>
+          <p class="code-link">See compile/run flow in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/RunSequence.java" target="_blank">RunSequence.java</a></p>
+        </section>
+
+        <section>
+          <h3>Packages &amp; Imports</h3>
+          <ul>
+            <li>Packages provide hierarchical namespaces (e.g., <code>package ch01.examples;</code>) and control accessibility</li>
+            <li><code>package</code> declaration must match directory structure and precede other code</li>
+            <li><code>import</code> statements allow simple type references; the default package should be avoided</li>
+            <li>Use wildcard imports for related utilities but prefer explicit imports for clarity</li>
+            <li><code>java.lang</code> is imported automatically; all other packages require explicit import or FQCN</li>
+          </ul>
+          <p class="code-link">Package setup illustrated in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/PackageDemo.java" target="_blank">PackageDemo.java</a></p>
+        </section>
+
+        <section>
+          <h3>Class &amp; Main Method Anatomy</h3>
+          <pre><code data-trim>
+package ch01.examples;
+
+public class ZooApp {
+    public static void main(String[] args) {
+        System.out.println("Welcome to the zoo!");
+    }
+}
+          </code></pre>
+          <ul>
+            <li>Public class name must match file name (<code>ZooApp.java</code>)</li>
+            <li>Entry point: <code>public static void main(String[] args)</code>; args may be empty but must exist</li>
+            <li>Only one public top-level class per file; additional classes are package-private</li>
+            <li>Statements end with semicolons; braces define class/method blocks</li>
+          </ul>
+          <p class="code-link">Run the sample in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/ZooApp.java" target="_blank">ZooApp.java</a></p>
+        </section>
+
+        <section>
+          <h3>Naming &amp; Identifier Rules</h3>
+          <ul>
+            <li>Identifiers may use letters, digits, underscores, and currency symbols but cannot start with digits</li>
+            <li>Reserved words (<code>class</code>, <code>static</code>, <code>this</code>) and literals (<code>true</code>, <code>null</code>) cannot be identifiers</li>
+            <li>Naming conventions: UpperCamelCase for classes/interfaces, lowerCamelCase for methods/variables, UPPER_CASE for constants</li>
+            <li>Identifiers are case-sensitive; avoid similar-looking characters (e.g., <code>O</code> vs <code>0</code>)</li>
+            <li>Use descriptive names to communicate intention</li>
+          </ul>
+          <p class="code-link">Identifier examples in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/NamingRules.java" target="_blank">NamingRules.java</a></p>
+        </section>
+
+        <section>
+          <h3>Primitive Data Types</h3>
+          <div class="two-column">
+            <div>
+              <strong>Integral</strong>
+              <ul>
+                <li><code>byte</code> (8-bit)</li>
+                <li><code>short</code> (16-bit)</li>
+                <li><code>int</code> (32-bit, default integer type)</li>
+                <li><code>long</code> (64-bit, append <code>L</code>)</li>
+              </ul>
+            </div>
+            <div>
+              <strong>Floating &amp; others</strong>
+              <ul>
+                <li><code>float</code> (32-bit, append <code>F</code>)</li>
+                <li><code>double</code> (64-bit, default decimal type)</li>
+                <li><code>char</code> (16-bit Unicode)</li>
+                <li><code>boolean</code> (true/false)</li>
+              </ul>
+            </div>
+          </div>
+          <ul>
+            <li>Numeric literals support underscores (<code>1_000_000</code>) and binary/hex/octal prefixes</li>
+            <li>Field primitives have default values; local variables must be initialised before use</li>
+          </ul>
+          <p class="code-link">See literals and assignments in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/PrimitivePlayground.java" target="_blank">PrimitivePlayground.java</a></p>
+        </section>
+
+        <section>
+          <h3>Reference Types &amp; Wrappers</h3>
+          <ul>
+            <li>Reference types point to objects on the heap (classes, arrays, interfaces, enums)</li>
+            <li>Wrapper classes (<code>Integer</code>, <code>Double</code>, etc.) provide object representations of primitives</li>
+            <li>Autoboxing/unboxing automatically converts between primitives and wrappers; beware of <code>null</code></li>
+            <li><code>String</code> is immutable; operations produce new instances rather than modifying existing ones</li>
+            <li>Use <code>equals()</code> for logical comparison; <code>==</code> compares references</li>
+          </ul>
+          <p class="code-link">Reference demos in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/ReferenceDemo.java" target="_blank">ReferenceDemo.java</a></p>
+        </section>
+
+        <section>
+          <h3>Local Variables &amp; Initialization</h3>
+          <ul>
+            <li>Local variables must be definitely assigned before first use; the compiler detects uninitialised accesses</li>
+            <li>Multiple declarations in a single statement must share the same type (<code>int a = 1, b = 2;</code>)</li>
+            <li><code>final</code> locals can be assigned once; they are useful for constants or capturing values</li>
+            <li>Array declarations may specify brackets with the type (<code>int[] values</code>) or variable name (<code>int values[]</code>)</li>
+            <li>Use descriptive initial values to clarify intent</li>
+          </ul>
+          <p class="code-link">See examples in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/VariableLifecycle.java" target="_blank">VariableLifecycle.java</a></p>
+        </section>
+
+        <section>
+          <h3>Type Inference with <code>var</code></h3>
+          <ul>
+            <li><code>var</code> reduces verbosity for local variables when the right-hand side clearly expresses the type</li>
+            <li>Cannot be used without an initializer or for fields, method parameters, lambda formals</li>
+            <li>The inferred type is fixed; subsequent assignments must be compatible</li>
+            <li>Use <code>var</code> when it improves readability, otherwise prefer explicit types</li>
+            <li>Be cautious with <code>var</code> when the inferred type is not obvious (e.g., <code>var data = List.of(1, 2)</code>)</li>
+          </ul>
+          <p class="code-link">Inference samples in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/VarDemo.java" target="_blank">VarDemo.java</a></p>
+        </section>
+
+        <section>
+          <h3>Scope, Blocks &amp; Shadowing</h3>
+          <ul>
+            <li>Blocks (<code>{ ... }</code>) define visibility of local variables; once the block ends, variables go out of scope</li>
+            <li>Variables declared inside loops or conditional branches exist only within those constructs</li>
+            <li>Shadowing occurs when an inner scope declares a variable with the same name as an outer scope variable</li>
+            <li>Fields (instance/static) remain available for the life of their object/class regardless of method scope</li>
+            <li>Effectively final locals can be captured by lambdas and inner classes</li>
+          </ul>
+          <p class="code-link">Scope behaviour shown in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/ScopeExamples.java" target="_blank">ScopeExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Object References &amp; Garbage Collection</h3>
+          <ul>
+            <li>References can be reassigned, allowing multiple variables to point to the same object</li>
+            <li>Objects become eligible for garbage collection when no live references reach them</li>
+            <li>Setting references to <code>null</code> can release objects earlier, but usually the GC manages this automatically</li>
+            <li><code>System.gc()</code> is only a hint; the JVM decides when to reclaim memory</li>
+            <li>Manage external resources (files, sockets) with <code>try-with-resources</code> or explicit close methods</li>
+          </ul>
+          <p class="code-link">GC examples in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/GarbageCollectionDemo.java" target="_blank">GarbageCollectionDemo.java</a></p>
+        </section>
+
+        <section>
+          <h3>Key Takeaways</h3>
+          <ul>
+            <li>Master the toolchain to compile, package, and run Java applications effectively</li>
+            <li>Structure source files with correct packages/imports and consistent naming conventions</li>
+            <li>Choose between primitives and references appropriately; leverage wrapper classes when needed</li>
+            <li>Apply <code>var</code> judiciously and respect scope rules to avoid bugs</li>
+            <li>Understand how the JVM manages object lifetimes and garbage collection</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Further Exploration</h3>
+          <p style="font-size:0.9em">Reinforce each concept with the repository code:</p>
+          <ul>
+            <li><a href="../../chapters/ch01-language-basics" target="_blank">Chapter 1 language basics module</a> &mdash; packaging, primitives, scope, GC demos</li>
+            <li><a href="../../chapters" target="_blank">Full chapters directory</a> for continued study across the book</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+        transition: 'slide'
+      });
+    </script>
+  </body>
+</html>

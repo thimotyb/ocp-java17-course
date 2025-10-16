@@ -62,3 +62,4 @@ Ensure every chapter of the OCP Java 17 course is created or updated with a cons
 - [ ] Example code present under `src/main/java`.
 - [ ] JUnit tests present under `src/test/java` and passing.
 - [ ] Build/test output captured in the final handover message.
+- [ ] When slide decks are requested, place them under `slides/<chapter>/index.html` using Reveal.js (from CDN). Create one slide per major topic with explanatory detail (not just bullet fragments), apply an engaging theme (e.g., “moon”), and include direct links inside each relevant slide to the matching `chapters/` code examples. Do not invent new book content; summarise faithfully.
