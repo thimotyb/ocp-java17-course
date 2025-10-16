@@ -10,6 +10,7 @@
     <module>chapters/ch01-language-basics</module>
     <module>chapters/ch02-operators</module>
     <module>chapters/ch03-making-decisions</module>
+    <module>chapters/ch04-core-apis</module>
   </modules>
 
   <properties>
