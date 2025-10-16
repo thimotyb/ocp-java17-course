@@ -15,6 +15,7 @@
     <module>chapters/ch06-class-design</module>
     <module>chapters/ch07-beyond-classes</module>
     <module>chapters/ch08-lambdas</module>
+    <module>chapters/ch09-collections-generics</module>
   </modules>
 
   <properties>

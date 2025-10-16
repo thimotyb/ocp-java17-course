@@ -10,3 +10,4 @@
 | [Chapter 6 – Class Design](chapters/ch06-class-design/README.md) | `chapters/ch06-class-design` | Inheritance, constructors, initialization order, overriding vs. hiding, and abstract classes. |
 | [Chapter 7 – Beyond Classes](chapters/ch07-beyond-classes/README.md) | `chapters/ch07-beyond-classes` | Interfaces, functional interfaces, enums, records, sealed types, and nested classes. |
 | [Chapter 8 – Lambdas and Functional Interfaces](chapters/ch08-lambdas/README.md) | `chapters/ch08-lambdas` | Lambda syntax, functional interfaces, java.util.function usage, method references, and variable scope. |
+| [Chapter 9 – Collections and Generics](chapters/ch09-collections-generics/README.md) | `chapters/ch09-collections-generics` | Lists, sets, queues, maps, comparators, and generic classes/methods with wildcards. |
