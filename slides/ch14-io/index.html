@@ -1,0 +1,161 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Chapter 14 – I/O</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/moon.css" id="theme">
+    <style>
+      :root {
+        --r-background-color: #0b132b;
+        --r-main-color: #f0f4f8;
+        --r-heading-color: #06d6a0;
+        --r-link-color: #ffd166;
+        --r-link-color-hover: #ef476f;
+        --r-selection-background-color: #ef476f;
+        --r-main-font: 'Segoe UI', 'Helvetica Neue', sans-serif;
+        --r-heading-font: 'Poppins', 'Helvetica Neue', sans-serif;
+        --r-heading-text-shadow: none;
+        --r-main-font-size: 30px;
+      }
+      .reveal section ul { margin-left: 0; }
+      .reveal section h3 { margin-bottom: 0.6em; }
+      .reveal section .two-column { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.2rem; }
+      .reveal section code { font-size: 0.9em; }
+      .code-link { margin-top: 0.8em; font-size: 0.8em; }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h2>Chapter 14 &ndash; I/O</h2>
+          <p style="font-size:0.95em">OCP Java SE 17 Study Guide &bull; NIO.2 paths, files, streams, and serialization</p>
+          <ul>
+            <li>Navigate the filesystem with `Path` and `Files` helpers</li>
+            <li>Leverage buffered streams and readers/writers for efficient data transfer</li>
+            <li>Inspect and manipulate file attributes, symbolic links, and directory trees</li>
+            <li>Serialize objects safely with Java’s object streams</li>
+          </ul>
+          <p class="code-link"><a href="../../chapters/ch14-io" target="_blank">Hands-on examples: chapters/ch14-io</a></p>
+        </section>
+
+        <section>
+          <h3>NIO.2 Path Basics</h3>
+          <ul>
+            <li>`Path` is immutable and platform-independent&mdash;build with `Paths.get` or `Path.of`</li>
+            <li>Use `resolve`, `resolveSibling`, and `relativize` to combine or compare paths</li>
+            <li>`normalize` removes redundant `.` and `..` segments without touching the filesystem</li>
+            <li>`toAbsolutePath` converts relative paths relative to the current working directory</li>
+          </ul>
+          <p class="code-link">Path operations in <a href="../../chapters/ch14-io/src/main/java/ch14/examples/FileSystemExamples.java" target="_blank">FileSystemExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Working with Files</h3>
+          <ul>
+            <li>`Files.exists`, `isDirectory`, `isSymbolicLink` check metadata without throwing</li>
+            <li>Create resources with `createFile`, `createDirectory`, or `createDirectories` for nested paths</li>
+            <li>`Files.copy`, `move`, and `delete` manage file transfers; specify `StandardCopyOption.REPLACE_EXISTING` to overwrite</li>
+            <li>Use `Files.list` for shallow directory listings; close the resulting stream or use try-with-resources</li>
+          </ul>
+          <p class="code-link">Filesystem helpers in <a href="../../chapters/ch14-io/src/main/java/ch14/examples/FileSystemExamples.java" target="_blank">FileSystemExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Walking Directory Trees</h3>
+          <ul>
+            <li>`Files.walk` provides a lazy stream of paths; limit depth or filter as needed</li>
+            <li>`Files.walkFileTree` with `SimpleFileVisitor` allows fine-grained callbacks for visit events</li>
+            <li>Use visitors for recursive copy/delete operations; honour `FileVisitResult` to continue, skip, or terminate</li>
+            <li>Handle symbolic links carefully to avoid cycles—configure `FileVisitOption.FOLLOW_LINKS` explicitly</li>
+          </ul>
+          <p class="code-link">Tree traversal patterns in <a href="../../chapters/ch14-io/src/main/java/ch14/examples/FileSystemExamples.java" target="_blank">FileSystemExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Stream &amp; Reader/Writer I/O</h3>
+          <div class="two-column">
+            <div>
+              <strong>Byte streams</strong>
+              <ul>
+                <li>`InputStream`/`OutputStream` transfer raw bytes; wrap with `BufferedInputStream` for performance</li>
+                <li>`Files.newInputStream`/`newOutputStream` bridge NIO.2 paths with classic streams</li>
+              </ul>
+            </div>
+            <div>
+              <strong>Character streams</strong>
+              <ul>
+                <li>`Reader`/`Writer` handle character encodings; prefer `Files.newBufferedReader` for text</li>
+                <li>`PrintWriter` offers convenient formatted output; remember to flush or close</li>
+              </ul>
+            </div>
+          </div>
+          <p class="code-link">Stream usage in <a href="../../chapters/ch14-io/src/main/java/ch14/examples/StreamIOExamples.java" target="_blank">StreamIOExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Buffered I/O &amp; Copying</h3>
+          <ul>
+            <li>Buffering reduces disk access frequency, improving throughput</li>
+            <li>`Files.copy` supports stream-to-stream copying; use try-with-resources to close streams automatically</li>
+            <li>`Files.readAllLines` and `readString` load entire files—prefer buffered streaming for large data</li>
+            <li>Combine buffered readers/writers with `lines()` or `write` for concise operations</li>
+          </ul>
+          <p class="code-link">Buffered operations in <a href="../../chapters/ch14-io/src/main/java/ch14/examples/StreamIOExamples.java" target="_blank">StreamIOExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Attributes &amp; Metadata</h3>
+          <ul>
+            <li>`Files.getLastModifiedTime`, `size`, `getOwner` expose basic metadata</li>
+            <li>`Files.readAttributes(path, BasicFileAttributes.class)` retrieves a snapshot of attributes</li>
+            <li>POSIX environments offer additional attributes (`PosixFileAttributes`, permissions)</li>
+            <li>Update attributes with `setLastModifiedTime`, `setAttribute`, or `setPosixFilePermissions`</li>
+          </ul>
+          <p class="code-link">Metadata helpers in <a href="../../chapters/ch14-io/src/main/java/ch14/examples/Nio2AttributesExamples.java" target="_blank">Nio2AttributesExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Serialization</h3>
+          <ul>
+            <li>Use `ObjectOutputStream`/`ObjectInputStream` to serialize Java objects that implement `Serializable`</li>
+            <li>Provide `serialVersionUID` to maintain compatibility across versions</li>
+            <li>Mark sensitive or derived fields `transient` to exclude them</li>
+            <li>Handle `ClassNotFoundException` and `InvalidClassException` when reading back data</li>
+          </ul>
+          <p class="code-link">Object stream usage in <a href="../../chapters/ch14-io/src/main/java/ch14/examples/SerializationExamples.java" target="_blank">SerializationExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Key Takeaways</h3>
+          <ul>
+            <li>NIO.2 `Path` and `Files` simplify cross-platform filesystem access</li>
+            <li>Buffered streams and readers/writers boost I/O efficiency and reduce boilerplate</li>
+            <li>Attribute APIs expose rich metadata—use them for audits, syncing, or permission handling</li>
+            <li>Serialize cautiously, controlling version compatibility and excluding sensitive fields</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Further Exploration</h3>
+          <p style="font-size:0.9em">Combine I/O with concurrency for scalable data pipelines, and transition to JDBC next.</p>
+          <ul>
+            <li><a href="../../chapters/ch14-io" target="_blank">Chapter 14 module</a> &mdash; NIO.2, streams, attributes, and serialization demos</li>
+            <li><a href="../../chapters/ch15-jdbc" target="_blank">Next: Chapter 15 JDBC</a></li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+        transition: 'slide'
+      });
+    </script>
+  </body>
+</html>

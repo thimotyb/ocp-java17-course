@@ -1,0 +1,172 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Chapter 10 – Streams</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/moon.css" id="theme">
+    <style>
+      :root {
+        --r-background-color: #0b132b;
+        --r-main-color: #f0f4f8;
+        --r-heading-color: #06d6a0;
+        --r-link-color: #ffd166;
+        --r-link-color-hover: #ef476f;
+        --r-selection-background-color: #ef476f;
+        --r-main-font: 'Segoe UI', 'Helvetica Neue', sans-serif;
+        --r-heading-font: 'Poppins', 'Helvetica Neue', sans-serif;
+        --r-heading-text-shadow: none;
+        --r-main-font-size: 30px;
+      }
+      .reveal section ul { margin-left: 0; }
+      .reveal section h3 { margin-bottom: 0.6em; }
+      .reveal section .two-column { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.2rem; }
+      .reveal section code { font-size: 0.9em; }
+      .code-link { margin-top: 0.8em; font-size: 0.8em; }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h2>Chapter 10 &ndash; Streams</h2>
+          <p style="font-size:0.95em">OCP Java SE 17 Study Guide &bull; Stream pipelines, optionals, collectors, and reductions</p>
+          <ul>
+            <li>Build lazy pipelines with clear sources, intermediates, and terminal operations</li>
+            <li>Harness `Optional` for safe absence handling</li>
+            <li>Switch between object and primitive streams appropriately</li>
+            <li>Collect and reduce data with built-in collectors and custom logic</li>
+          </ul>
+          <p class="code-link"><a href="../../chapters/ch10-streams" target="_blank">Hands-on examples: chapters/ch10-streams</a></p>
+        </section>
+
+        <section>
+          <h3>Optional Fundamentals</h3>
+          <ul>
+            <li>Create optionals with `empty`, `of`, or `ofNullable` based on expected nullability</li>
+            <li>Chain operations using `map`, `flatMap`, and `filter`</li>
+            <li>Unwrap with `orElse`, `orElseGet`, or `orElseThrow`&mdash;prefer lazily evaluated suppliers when expensive</li>
+            <li>Never store `null` inside an `Optional`; it models the presence or absence of a value</li>
+          </ul>
+          <p class="code-link">Optional patterns in <a href="../../chapters/ch10-streams/src/main/java/ch10/examples/OptionalExamples.java" target="_blank">OptionalExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Pipeline Anatomy</h3>
+          <ul>
+            <li>A stream pipeline consists of a source, intermediate operations, and one terminal operation</li>
+            <li>Intermediates (e.g., `filter`, `map`, `sorted`) are lazy; nothing executes until a terminal operation runs</li>
+            <li>Streams cannot be reused&mdash;terminal operations consume them</li>
+            <li>Side-effect operations (`peek`) are primarily for debugging; avoid mutating shared state</li>
+          </ul>
+          <p class="code-link">Pipeline stages in <a href="../../chapters/ch10-streams/src/main/java/ch10/examples/StreamPipelineExamples.java" target="_blank">StreamPipelineExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Intermediate Operations</h3>
+          <div class="two-column">
+            <div>
+              <strong>Stateful</strong>
+              <ul>
+                <li>`sorted`, `distinct`, `limit`, and `skip` may require buffering elements</li>
+                <li>Ordering matters—stateful operations often anchor pipeline logic</li>
+              </ul>
+            </div>
+            <div>
+              <strong>Stateless</strong>
+              <ul>
+                <li>`map`, `filter`, `flatMap`, `peek` process each element independently</li>
+                <li>Compose multiple intermediates to express transformations declaratively</li>
+              </ul>
+            </div>
+          </div>
+          <p class="code-link">Intermediate use cases in <a href="../../chapters/ch10-streams/src/main/java/ch10/examples/StreamPipelineExamples.java" target="_blank">StreamPipelineExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Terminal Operations</h3>
+          <ul>
+            <li>Short-circuiting terminals (`findFirst`, `anyMatch`, `limit`) can stop processing early</li>
+            <li>Reduction terminals (`reduce`, `collect`, `sum`, `average`) aggregate results</li>
+            <li>`forEach` consumes elements but should avoid mutating shared data structures</li>
+            <li>Terminal operations return a result or side-effect and close the stream</li>
+          </ul>
+          <p class="code-link">Terminal behaviour in <a href="../../chapters/ch10-streams/src/main/java/ch10/examples/StreamPipelineExamples.java" target="_blank">StreamPipelineExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Primitive Streams</h3>
+          <ul>
+            <li>`IntStream`, `LongStream`, `DoubleStream` avoid boxing and provide numeric helpers</li>
+            <li>Bridge between object and primitive streams with `mapToInt`, `boxed`, and friends</li>
+            <li>Use summary statistics (`summaryStatistics`, `average`, `sum`) for aggregate data</li>
+            <li>Primitive streams support range factories (`IntStream.range`, `rangeClosed`)</li>
+          </ul>
+          <p class="code-link">Numeric pipelines in <a href="../../chapters/ch10-streams/src/main/java/ch10/examples/PrimitiveStreamExamples.java" target="_blank">PrimitiveStreamExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Collectors &amp; Grouping</h3>
+          <ul>
+            <li>`Collectors.toList`, `toSet`, `toCollection` build mutable containers</li>
+            <li>`groupingBy` and `partitioningBy` categorise data; combine with downstream collectors (`mapping`, `collectingAndThen`)</li>
+            <li>`joining` concatenates strings with optional delimiters, prefixes, and suffixes</li>
+            <li>`toMap` requires unique keys or a merge function; use `LinkedHashMap` supplier to preserve order</li>
+          </ul>
+          <p class="code-link">Collector recipes in <a href="../../chapters/ch10-streams/src/main/java/ch10/examples/StreamPipelineExamples.java" target="_blank">StreamPipelineExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Reduce &amp; Identity Values</h3>
+          <ul>
+            <li>`reduce(identity, accumulator)` guarantees an identity even for empty streams</li>
+            <li>Associative accumulation is required for correctness (especially with parallel streams)</li>
+            <li>Three-argument reduce supports mutable containers but collectors are often clearer</li>
+            <li>Use `Optional<T> reduce(BinaryOperator<T>)` when no safe identity exists</li>
+          </ul>
+          <p class="code-link">Reduction examples in <a href="../../chapters/ch10-streams/src/main/java/ch10/examples/StreamPipelineExamples.java" target="_blank">StreamPipelineExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Infinite &amp; Parallel Streams</h3>
+          <ul>
+            <li>`Stream.generate` and `iterate` can produce infinite streams—pair with `limit` or short-circuit terminals</li>
+            <li>Parallel streams split workloads but require stateless, non-interfering operations</li>
+            <li>Ordering constraints may reduce parallel efficiency; use `unordered()` when safe</li>
+            <li>Debug with `peek` but remove side effects before production</li>
+          </ul>
+          <p class="code-link">Parallel behaviour discussed in <a href="../../chapters/ch13-concurrency/src/main/java/ch13/examples/ParallelStreamExamples.java" target="_blank">ParallelStreamExamples.java</a> (Chapter 13)</p>
+        </section>
+
+        <section>
+          <h3>Key Takeaways</h3>
+          <ul>
+            <li>Streams are lazy; design pipelines around pure transformations and terminal operations</li>
+            <li>Use `Optional` instead of `null` for optional results and chain operations fluently</li>
+            <li>Switch to primitive streams for numeric workloads to avoid boxing overhead</li>
+            <li>Collectors and reductions turn pipelines into aggregate results—understand identity values and associativity</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Further Exploration</h3>
+          <p style="font-size:0.9em">Combine streams with concurrency and collectors in later chapters.</p>
+          <ul>
+            <li><a href="../../chapters/ch10-streams" target="_blank">Chapter 10 module</a> &mdash; Optional, stream pipelines, primitives, and collectors</li>
+            <li><a href="../../chapters/ch11-exceptions-localization" target="_blank">Next: Chapter 11</a> for exceptions and localisation</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+        transition: 'slide'
+      });
+    </script>
+  </body>
+</html>

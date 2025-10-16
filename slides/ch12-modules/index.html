@@ -1,0 +1,161 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Chapter 12 – Modules</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/moon.css" id="theme">
+    <style>
+      :root {
+        --r-background-color: #0b132b;
+        --r-main-color: #f0f4f8;
+        --r-heading-color: #118ab2;
+        --r-link-color: #ffd166;
+        --r-link-color-hover: #ef476f;
+        --r-selection-background-color: #ef476f;
+        --r-main-font: 'Segoe UI', 'Helvetica Neue', sans-serif;
+        --r-heading-font: 'Poppins', 'Helvetica Neue', sans-serif;
+        --r-heading-text-shadow: none;
+        --r-main-font-size: 30px;
+      }
+      .reveal section ul { margin-left: 0; }
+      .reveal section h3 { margin-bottom: 0.6em; }
+      .reveal section .two-column { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.2rem; }
+      .reveal section code { font-size: 0.9em; }
+      .code-link { margin-top: 0.8em; font-size: 0.8em; }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h2>Chapter 12 &ndash; Modules</h2>
+          <p style="font-size:0.95em">OCP Java SE 17 Study Guide &bull; Java Platform Module System (JPMS) descriptors, tooling, and services</p>
+          <ul>
+            <li>Describe modules with `module-info.java` and directive combinations</li>
+            <li>Compile, package, and run modular applications</li>
+            <li>Control readability, accessibility, and service loading</li>
+            <li>Inspect modules at runtime with the `Module` API</li>
+          </ul>
+          <p class="code-link"><a href="../../chapters/ch12-modules" target="_blank">Hands-on examples: chapters/ch12-modules</a></p>
+        </section>
+
+        <section>
+          <h3>Module Descriptors</h3>
+          <ul>
+            <li>`module-info.java` defines module boundaries and directives</li>
+            <li>`requires module.name;` declares dependencies (read edges)</li>
+            <li>`exports package.name;` makes packages accessible to other modules</li>
+            <li>Omitting `exports` keeps packages encapsulated within the module</li>
+          </ul>
+          <p class="code-link">Descriptor snippets in <a href="../../chapters/ch12-modules/src/main/java/ch12/examples/ModuleDescriptorExamples.java" target="_blank">ModuleDescriptorExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Advanced Directives</h3>
+          <div class="two-column">
+            <div>
+              <strong>Readability</strong>
+              <ul>
+                <li>`requires transitive` exposes dependencies to downstream consumers</li>
+                <li>`requires static` is only needed at compile time (e.g., optional features)</li>
+              </ul>
+            </div>
+            <div>
+              <strong>Accessibility</strong>
+              <ul>
+                <li>`exports pkg to moduleX` limits visibility to specific modules</li>
+                <li>`opens pkg` or `open module` grants reflective access (often for frameworks)</li>
+              </ul>
+            </div>
+          </div>
+          <p class="code-link">Directive combinations in <a href="../../chapters/ch12-modules/src/main/java/ch12/examples/ModuleDescriptorExamples.java" target="_blank">ModuleDescriptorExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Service Loading</h3>
+          <ul>
+            <li>`uses service.Interface` declares a dependency on a service</li>
+            <li>`provides service.Interface with impl.Class` registers implementations</li>
+            <li>`ServiceLoader.load` discovers providers at runtime using module metadata</li>
+            <li>Services decouple API from implementations, enabling plug-in architectures</li>
+          </ul>
+          <p class="code-link">Service directives highlighted in <a href="../../chapters/ch12-modules/src/main/java/ch12/examples/ModuleDescriptorExamples.java" target="_blank">ModuleDescriptorExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Compiling Modular Code</h3>
+          <ul>
+            <li>`javac --module-path mods -d out --module-source-path src $(find ...)` compiles modules</li>
+            <li>A module’s `module-info.java` must compile alongside its source packages</li>
+            <li>`jar --create --file mods/module.jar --module-version 1.0 -C out/module .` packages the module</li>
+            <li>Use structured directories: `src/moduleName/module-info.java` with matching package roots</li>
+          </ul>
+          <p class="code-link">Command walkthrough in <a href="../../chapters/ch12-modules/src/main/java/ch12/examples/ModulePathExamples.java" target="_blank">ModulePathExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Running Modular Applications</h3>
+          <ul>
+            <li>Launch with `java --module-path mods -m module/com.example.Main`</li>
+            <li>`--add-reads` and `--add-opens` can override descriptor constraints for testing or migration</li>
+            <li>Combine application modules with standard library modules on the module path</li>
+            <li>Use layered class loaders (`ModuleLayer`) for plugin architectures</li>
+          </ul>
+          <p class="code-link">Runtime examples in <a href="../../chapters/ch12-modules/src/main/java/ch12/examples/ModulePathExamples.java" target="_blank">ModulePathExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Inspecting Modules at Runtime</h3>
+          <ul>
+            <li>`ModuleLayer.boot().modules()` lists modules loaded into the initial layer</li>
+            <li>`Module` objects expose descriptors, readability edges, and exported packages</li>
+            <li>`module.isExported("pkg")` checks accessibility; `getDescriptor().requires()` enumerates dependencies</li>
+            <li>Reflection helps debugging module configuration and enforcing policies</li>
+          </ul>
+          <p class="code-link">Reflection patterns in <a href="../../chapters/ch12-modules/src/main/java/ch12/examples/ModuleReflectionExamples.java" target="_blank">ModuleReflectionExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Migration Tips</h3>
+          <ul>
+            <li>Start with automatic modules (`jar` on module path without descriptor) for gradual migration</li>
+            <li>Add descriptors incrementally, refining exports and requires as dependencies stabilise</li>
+            <li>Audit reflective access needs to decide between `opens` directives and `--add-opens` at launch</li>
+            <li>Document module boundaries to guide future development</li>
+          </ul>
+          <p class="code-link">Migration commentary in <a href="../../chapters/ch12-modules/src/main/java/ch12/examples/ModulePathExamples.java" target="_blank">ModulePathExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Key Takeaways</h3>
+          <ul>
+            <li>Use `requires`, `exports`, and `opens` to define module dependencies and accessibility</li>
+            <li>Service directives (`uses`/`provides`) enable modular plugin architectures</li>
+            <li>Tooling requires explicit module paths for compilation and execution</li>
+            <li>Runtime inspection validates module graphs and helps troubleshoot access issues</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Further Exploration</h3>
+          <p style="font-size:0.9em">Experiment with multi-module builds and custom service loaders.</p>
+          <ul>
+            <li><a href="../../chapters/ch12-modules" target="_blank">Chapter 12 module</a> &mdash; descriptor variants, module tooling, and reflection</li>
+            <li><a href="../../chapters/ch13-concurrency" target="_blank">Next: Chapter 13 Concurrency</a></li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+        transition: 'slide'
+      });
+    </script>
+  </body>
+</html>

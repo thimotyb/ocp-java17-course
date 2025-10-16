@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Chapter 13 – Concurrency</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/moon.css" id="theme">
+    <style>
+      :root {
+        --r-background-color: #0b132b;
+        --r-main-color: #f0f4f8;
+        --r-heading-color: #ffd166;
+        --r-link-color: #06d6a0;
+        --r-link-color-hover: #ef476f;
+        --r-selection-background-color: #ef476f;
+        --r-main-font: 'Segoe UI', 'Helvetica Neue', sans-serif;
+        --r-heading-font: 'Poppins', 'Helvetica Neue', sans-serif;
+        --r-heading-text-shadow: none;
+        --r-main-font-size: 30px;
+      }
+      .reveal section ul { margin-left: 0; }
+      .reveal section h3 { margin-bottom: 0.6em; }
+      .reveal section .two-column { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.2rem; }
+      .reveal section code { font-size: 0.9em; }
+      .code-link { margin-top: 0.8em; font-size: 0.8em; }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h2>Chapter 13 &ndash; Concurrency</h2>
+          <p style="font-size:0.95em">OCP Java SE 17 Study Guide &bull; Threads, executors, synchronization, and parallel streams</p>
+          <ul>
+            <li>Create threads with `Runnable`, `Callable`, and `Thread` subclasses</li>
+            <li>Coordinate tasks using `ExecutorService` and futures</li>
+            <li>Protect shared state with synchronization utilities and thread-safe collections</li>
+            <li>Evaluate when to use parallel streams for data processing</li>
+          </ul>
+          <p class="code-link"><a href="../../chapters/ch13-concurrency" target="_blank">Hands-on examples: chapters/ch13-concurrency</a></p>
+        </section>
+
+        <section>
+          <h3>Thread Fundamentals</h3>
+          <ul>
+            <li>Create threads by extending `Thread` or supplying a `Runnable` to a new `Thread` instance</li>
+            <li>Start work with `start()`; calling `run()` directly executes synchronously on the current thread</li>
+            <li>Use `join()` to wait for completion and `sleep()` to pause execution</li>
+            <li>Handle interruptions gracefully by checking `Thread.interrupted()` or catching `InterruptedException`</li>
+          </ul>
+          <p class="code-link">Thread listings in <a href="../../chapters/ch13-concurrency/src/main/java/ch13/examples/ThreadExamples.java" target="_blank">ThreadExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Synchronization &amp; Shared State</h3>
+          <ul>
+            <li>Guard mutable shared data with `synchronized` blocks or methods</li>
+            <li>Atomic classes (`AtomicInteger`, `AtomicReference`) offer lock-free updates</li>
+            <li>Locks (`ReentrantLock`) provide explicit control, fairness, and interruptible locking</li>
+            <li>Minimise critical sections to reduce contention and avoid deadlocks by consistent lock ordering</li>
+          </ul>
+          <p class="code-link">Synchronization patterns in <a href="../../chapters/ch13-concurrency/src/main/java/ch13/examples/SynchronizationExamples.java" target="_blank">SynchronizationExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Executor Services</h3>
+          <ul>
+            <li>`ExecutorService` decouples task submission from execution; obtain via `Executors` factory methods</li>
+            <li>`submit` returns a `Future`; `invokeAll`/`invokeAny` coordinate batches</li>
+            <li>Always shut down executors (`shutdown`, then `awaitTermination`, fallback to `shutdownNow`)</li>
+            <li>Use scheduled executors for periodic or delayed tasks</li>
+          </ul>
+          <p class="code-link">Executor usage in <a href="../../chapters/ch13-concurrency/src/main/java/ch13/examples/ExecutorExamples.java" target="_blank">ExecutorExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Futures &amp; Callables</h3>
+          <ul>
+            <li>`Callable<V>` tasks return values or throw checked exceptions</li>
+            <li>`Future.get()` blocks until completion; provide timeouts to avoid indefinite waits</li>
+            <li>`Future.isDone()`/`isCancelled()` inspect task state; cancel with `cancel(true)` to interrupt</li>
+            <li>Handle exceptions thrown by tasks via `ExecutionException` wrappers</li>
+          </ul>
+          <p class="code-link">Future handling in <a href="../../chapters/ch13-concurrency/src/main/java/ch13/examples/ExecutorExamples.java" target="_blank">ExecutorExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Thread-safe Collections &amp; Utilities</h3>
+          <ul>
+            <li>`ConcurrentHashMap`, `ConcurrentLinkedQueue`, and `CopyOnWriteArrayList` provide concurrent-friendly operations</li>
+            <li>`Collections.synchronizedList` wraps existing collections but still requires external iteration locking</li>
+            <li>Use `BlockingQueue` for producer/consumer coordination</li>
+            <li>Prefer atomic operations (`computeIfAbsent`, `merge`) to avoid race conditions</li>
+          </ul>
+          <p class="code-link">Collection utilities referenced in <a href="../../chapters/ch13-concurrency/src/main/java/ch13/examples/SynchronizationExamples.java" target="_blank">SynchronizationExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Parallel Streams</h3>
+          <ul>
+            <li>Parallel streams split workloads across the common Fork/Join pool</li>
+            <li>Operations must be stateless, non-interfering, and associative for correctness</li>
+            <li>Beware of shared mutable state—collect results into thread-safe structures or use collectors designed for parallelism</li>
+            <li>Measure performance; small datasets or ordered pipelines may run slower in parallel</li>
+          </ul>
+          <p class="code-link">Parallel stream behaviour in <a href="../../chapters/ch13-concurrency/src/main/java/ch13/examples/ParallelStreamExamples.java" target="_blank">ParallelStreamExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Best Practices</h3>
+          <ul>
+            <li>Minimise shared state and prefer immutable messages between threads</li>
+            <li>Use higher-level abstractions (executors, concurrent collections) instead of low-level thread management</li>
+            <li>Document thread ownership and lifecycle expectations to aid maintenance</li>
+            <li>Test under load and with concurrency-focused tools to uncover race conditions</li>
+          </ul>
+          <p class="code-link">Discussion embedded in <a href="../../chapters/ch13-concurrency/src/main/java/ch13/examples/Chapter13Demo.java" target="_blank">Chapter13Demo.java</a></p>
+        </section>
+
+        <section>
+          <h3>Key Takeaways</h3>
+          <ul>
+            <li>Choose the right concurrency primitive for the problem&mdash;threads, executors, atomics, or parallel streams</li>
+            <li>Always shut down executors and handle interruptions cooperatively</li>
+            <li>Synchronise access to shared mutable state or restructure data to avoid it</li>
+            <li>Measure and reason about parallel performance rather than assuming improvements</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Further Exploration</h3>
+          <p style="font-size:0.9em">Advance to I/O and database chapters to integrate concurrency with data access.</p>
+          <ul>
+            <li><a href="../../chapters/ch13-concurrency" target="_blank">Chapter 13 module</a> &mdash; threading, executors, synchronization, and parallel streams</li>
+            <li><a href="../../chapters/ch14-io" target="_blank">Next: Chapter 14 I/O</a></li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+        transition: 'slide'
+      });
+    </script>
+  </body>
+</html>

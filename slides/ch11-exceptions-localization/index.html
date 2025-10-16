@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Chapter 11 – Exceptions and Localization</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/moon.css" id="theme">
+    <style>
+      :root {
+        --r-background-color: #0b132b;
+        --r-main-color: #f0f4f8;
+        --r-heading-color: #ef476f;
+        --r-link-color: #06d6a0;
+        --r-link-color-hover: #ffd166;
+        --r-selection-background-color: #ffd166;
+        --r-main-font: 'Segoe UI', 'Helvetica Neue', sans-serif;
+        --r-heading-font: 'Poppins', 'Helvetica Neue', sans-serif;
+        --r-heading-text-shadow: none;
+        --r-main-font-size: 30px;
+      }
+      .reveal section ul { margin-left: 0; }
+      .reveal section h3 { margin-bottom: 0.6em; }
+      .reveal section .two-column { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.2rem; }
+      .reveal section code { font-size: 0.9em; }
+      .code-link { margin-top: 0.8em; font-size: 0.8em; }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h2>Chapter 11 &ndash; Exceptions and Localization</h2>
+          <p style="font-size:0.95em">OCP Java SE 17 Study Guide &bull; Exception handling, try-with-resources, and locale-aware APIs</p>
+          <ul>
+            <li>Differentiate checked, unchecked, and error conditions</li>
+            <li>Manage try/catch/finally flows and try-with-resources</li>
+            <li>Create custom exceptions with suppressed and chained causes</li>
+            <li>Format and localise numbers, dates, and messages with `Locale` and `ResourceBundle`</li>
+          </ul>
+          <p class="code-link"><a href="../../chapters/ch11-exceptions-localization" target="_blank">Hands-on examples: chapters/ch11-exceptions-localization</a></p>
+        </section>
+
+        <section>
+          <h3>Exception Hierarchy</h3>
+          <ul>
+            <li>Checked exceptions extend `Exception` (minus `RuntimeException`) and must be handled or declared</li>
+            <li>Unchecked exceptions extend `RuntimeException`; use them for programming errors</li>
+            <li>Errors (`Error`) signal serious issues (JVM/Linkage) and should not be caught routinely</li>
+            <li>Custom hierarchies let you model domain-specific failures</li>
+          </ul>
+          <p class="code-link">Hierarchy examples in <a href="../../chapters/ch11-exceptions-localization/src/main/java/ch11/examples/ExceptionExamples.java" target="_blank">ExceptionExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Try, Catch, and Finally</h3>
+          <ul>
+            <li>`try` blocks guard code that may throw exceptions; `catch` handles specific types</li>
+            <li>Multi-catch (`catch (IOException | SQLException e)`) shares a final or effectively final variable</li>
+            <li>`finally` runs regardless of success or failure—even after a `return` or `throw`</li>
+            <li>Order catch clauses from most specific to most general to avoid compilation errors</li>
+          </ul>
+          <p class="code-link">Control flow samples in <a href="../../chapters/ch11-exceptions-localization/src/main/java/ch11/examples/ExceptionExamples.java" target="_blank">ExceptionExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Try-with-Resources</h3>
+          <ul>
+            <li>Resources must implement `AutoCloseable`; they close automatically in reverse creation order</li>
+            <li>Suppressed exceptions capture failures thrown during closing&mdash;inspect via `Throwable.getSuppressed()`</li>
+            <li>You can mix try-with-resources with catch/finally for cleanup beyond resource closing</li>
+            <li>Declare effectively final variables in the resource header or reference pre-declared final variables</li>
+          </ul>
+          <p class="code-link">AutoCloseable handling in <a href="../../chapters/ch11-exceptions-localization/src/main/java/ch11/examples/ExceptionExamples.java" target="_blank">ExceptionExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Custom Exceptions &amp; Chaining</h3>
+          <ul>
+            <li>Create custom exception classes to provide meaningful type signals</li>
+            <li>Use constructor overloads that accept a message, cause, or both</li>
+            <li>Chain exceptions (`new CustomException("msg", cause)`) to preserve root-cause information</li>
+            <li>Surface suppressed exceptions when multiple failures occur in try-with-resources</li>
+          </ul>
+          <p class="code-link">Custom exception patterns in <a href="../../chapters/ch11-exceptions-localization/src/main/java/ch11/examples/ExceptionExamples.java" target="_blank">ExceptionExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Localization Basics</h3>
+          <ul>
+            <li>`Locale` combines language and region (e.g., `new Locale("fr", "CA")`) or use constants like `Locale.US`</li>
+            <li>Formatting APIs (`NumberFormat`, `DateTimeFormatter`) adjust output per locale</li>
+            <li>Parsing requires matching the locale used to format the data</li>
+            <li>Fallback rules attempt more general locales before defaulting to the base bundle</li>
+          </ul>
+          <p class="code-link">Locale creation in <a href="../../chapters/ch11-exceptions-localization/src/main/java/ch11/examples/LocalizationExamples.java" target="_blank">LocalizationExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Formatting Numbers &amp; Dates</h3>
+          <ul>
+            <li>`NumberFormat.getCurrencyInstance(locale)` outputs locale-specific currency symbols and separators</li>
+            <li>`NumberFormat.parse` returns `Number`—cast to the required primitive wrapper</li>
+            <li>`DateTimeFormatter.ofLocalizedDateTime` formats `LocalDateTime` using locale-defined styles</li>
+            <li>Custom patterns (`DateTimeFormatter.ofPattern`) may need locale-specific symbols</li>
+          </ul>
+          <p class="code-link">Formatting routines in <a href="../../chapters/ch11-exceptions-localization/src/main/java/ch11/examples/LocalizationExamples.java" target="_blank">LocalizationExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Resource Bundles</h3>
+          <ul>
+            <li>`ResourceBundle.getBundle("Zoo", locale)` loads the best match (properties or classes)</li>
+            <li>Use `containsKey` before `getString` to avoid `MissingResourceException`</li>
+            <li>Bundles can define parameterised messages; combine with `MessageFormat` for substitution</li>
+            <li>Store keys consistently across locales to guarantee translation coverage</li>
+          </ul>
+          <p class="code-link">Bundle usage in <a href="../../chapters/ch11-exceptions-localization/src/main/java/ch11/examples/LocalizationExamples.java" target="_blank">LocalizationExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Key Takeaways</h3>
+          <ul>
+            <li>Handle checked exceptions explicitly and reserve unchecked ones for programming faults</li>
+            <li>Leverage try-with-resources to simplify cleanup and capture suppressed exceptions</li>
+            <li>Design custom exceptions with meaningful messages and chained causes</li>
+            <li>Use `Locale`, `NumberFormat`, and `ResourceBundle` to provide localisation across regions</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Further Exploration</h3>
+          <p style="font-size:0.9em">Integrate localisation with user interfaces and continue into the module system next.</p>
+          <ul>
+            <li><a href="../../chapters/ch11-exceptions-localization" target="_blank">Chapter 11 module</a> &mdash; exception handling and localisation demos</li>
+            <li><a href="../../chapters/ch12-modules" target="_blank">Next: Chapter 12 Modules</a></li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+        transition: 'slide'
+      });
+    </script>
+  </body>
+</html>

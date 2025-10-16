@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Chapter 15 – JDBC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/moon.css" id="theme">
+    <style>
+      :root {
+        --r-background-color: #0b132b;
+        --r-main-color: #f0f4f8;
+        --r-heading-color: #ef476f;
+        --r-link-color: #06d6a0;
+        --r-link-color-hover: #ffd166;
+        --r-selection-background-color: #ffd166;
+        --r-main-font: 'Segoe UI', 'Helvetica Neue', sans-serif;
+        --r-heading-font: 'Poppins', 'Helvetica Neue', sans-serif;
+        --r-heading-text-shadow: none;
+        --r-main-font-size: 30px;
+      }
+      .reveal section ul { margin-left: 0; }
+      .reveal section h3 { margin-bottom: 0.6em; }
+      .reveal section .two-column { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.2rem; }
+      .reveal section code { font-size: 0.9em; }
+      .code-link { margin-top: 0.8em; font-size: 0.8em; }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h2>Chapter 15 &ndash; JDBC</h2>
+          <p style="font-size:0.95em">OCP Java SE 17 Study Guide &bull; Connections, statements, transactions, and metadata</p>
+          <ul>
+            <li>Connect to relational databases with JDBC drivers and `DriverManager`</li>
+            <li>Execute queries and updates using `Statement` and `PreparedStatement`</li>
+            <li>Manage transactions, auto-commit, and savepoints</li>
+            <li>Inspect database metadata and result set structures programmatically</li>
+          </ul>
+          <p class="code-link"><a href="../../chapters/ch15-jdbc" target="_blank">Hands-on examples: chapters/ch15-jdbc</a></p>
+        </section>
+
+        <section>
+          <h3>Connecting to the Database</h3>
+          <ul>
+            <li>Drivers auto-register in JDBC 4+; use `DriverManager.getConnection(url, user, pass)` to obtain connections</li>
+            <li>Always close connections via try-with-resources to release sockets</li>
+            <li>Use connection URLs that specify vendor settings (timezone, SSL, etc.)</li>
+            <li>Validate connectivity with simple queries before issuing complex operations</li>
+          </ul>
+          <p class="code-link">Connection setup in <a href="../../chapters/ch15-jdbc/src/main/java/ch15/examples/JdbcExamples.java" target="_blank">JdbcExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Statements &amp; Prepared Statements</h3>
+          <ul>
+            <li>`Statement` executes static SQL; `PreparedStatement` supports parameters and prevents SQL injection</li>
+            <li>Bind parameters with `setString`, `setInt`, etc. before execution</li>
+            <li>`executeQuery` returns a `ResultSet`; `executeUpdate` returns affected row counts</li>
+            <li>Use batches (`addBatch`, `executeBatch`) for efficient bulk operations</li>
+          </ul>
+          <p class="code-link">Query examples in <a href="../../chapters/ch15-jdbc/src/main/java/ch15/examples/JdbcExamples.java" target="_blank">JdbcExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Processing Result Sets</h3>
+          <ul>
+            <li>Iterate with `while (rs.next()) { ... }` to process rows sequentially</li>
+            <li>Access columns by index or label via `getString`, `getInt`, `getObject`</li>
+            <li>Updateable result sets support `updateXxx` followed by `updateRow`</li>
+            <li>Remember that column indices start at 1, not 0</li>
+          </ul>
+          <p class="code-link">ResultSet handling in <a href="../../chapters/ch15-jdbc/src/main/java/ch15/examples/JdbcExamples.java" target="_blank">JdbcExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Transaction Control</h3>
+          <ul>
+            <li>Auto-commit (default) commits after each statement; disable with `setAutoCommit(false)` for manual control</li>
+            <li>Call `commit` to persist or `rollback` to discard changes; always wrap critical operations in try/catch</li>
+            <li>Use savepoints (`setSavepoint`, `rollback(savepoint)`) for partial rollbacks</li>
+            <li>Ensure connections are returned to a known state before reuse (reset auto-commit)</li>
+          </ul>
+          <p class="code-link">Transaction scenarios in <a href="../../chapters/ch15-jdbc/src/main/java/ch15/examples/TransactionExamples.java" target="_blank">TransactionExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Handling Exceptions &amp; Cleanup</h3>
+          <ul>
+            <li>Catch `SQLException` and inspect `SQLState`, vendor codes, and chained exceptions (`getNextException`)</li>
+            <li>Rollback in the catch block before rethrowing or handling errors</li>
+            <li>Use try-with-resources to close connections, statements, and result sets automatically</li>
+            <li>Log SQL statements for troubleshooting and auditing</li>
+          </ul>
+          <p class="code-link">Error handling patterns in <a href="../../chapters/ch15-jdbc/src/main/java/ch15/examples/TransactionExamples.java" target="_blank">TransactionExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Database &amp; Result Metadata</h3>
+          <ul>
+            <li>`DatabaseMetaData` reveals capabilities (supported SQL, tables, transactions)</li>
+            <li>`ResultSetMetaData` returns column names, types, precision, and nullable flags</li>
+            <li>Use metadata to build dynamic UI or validation tools</li>
+            <li>Remember to close metadata result sets, which are themselves `ResultSet` objects</li>
+          </ul>
+          <p class="code-link">Metadata queries in <a href="../../chapters/ch15-jdbc/src/main/java/ch15/examples/MetadataExamples.java" target="_blank">MetadataExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Best Practices</h3>
+          <ul>
+            <li>Parameterize SQL to avoid injection and leverage statement caching</li>
+            <li>Use connection pools (`DataSource`) for production workloads</li>
+            <li>Close resources in reverse order of acquisition (ResultSet → Statement → Connection)</li>
+            <li>Monitor transaction boundaries to avoid long-lived locks</li>
+          </ul>
+          <p class="code-link">Guidelines summarised in <a href="../../chapters/ch15-jdbc/src/main/java/ch15/examples/Chapter15Demo.java" target="_blank">Chapter15Demo.java</a></p>
+        </section>
+
+        <section>
+          <h3>Key Takeaways</h3>
+          <ul>
+            <li>Understand connection lifecycle and commit/rollback semantics</li>
+            <li>Select the appropriate statement type and bind parameters safely</li>
+            <li>Use metadata APIs to introspect schemas and results dynamically</li>
+            <li>Embrace try-with-resources and structured exception handling for robust JDBC code</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Further Exploration</h3>
+          <p style="font-size:0.9em">Integrate JDBC with connection pools and ORM frameworks after mastering the fundamentals.</p>
+          <ul>
+            <li><a href="../../chapters/ch15-jdbc" target="_blank">Chapter 15 module</a> &mdash; connections, statements, transactions, and metadata demos</li>
+            <li><a href="../../slides/ch01-building-blocks/index.html" target="_blank">Revisit earlier chapters</a> to reinforce the full OCP path</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+        transition: 'slide'
+      });
+    </script>
+  </body>
+</html>

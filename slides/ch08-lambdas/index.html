@@ -1,0 +1,165 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Chapter 8 – Lambdas and Functional Interfaces</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/moon.css" id="theme">
+    <style>
+      :root {
+        --r-background-color: #0b132b;
+        --r-main-color: #f0f4f8;
+        --r-heading-color: #06d6a0;
+        --r-link-color: #ffd166;
+        --r-link-color-hover: #ef476f;
+        --r-selection-background-color: #ef476f;
+        --r-main-font: 'Segoe UI', 'Helvetica Neue', sans-serif;
+        --r-heading-font: 'Poppins', 'Helvetica Neue', sans-serif;
+        --r-heading-text-shadow: none;
+        --r-main-font-size: 30px;
+      }
+      .reveal section ul {
+        margin-left: 0;
+      }
+      .reveal section h3 {
+        margin-bottom: 0.6em;
+      }
+      .reveal section .two-column {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.2rem;
+      }
+      .reveal section code {
+        font-size: 0.9em;
+      }
+      .code-link {
+        margin-top: 0.8em;
+        font-size: 0.8em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h2>Chapter 8 &ndash; Lambdas and Functional Interfaces</h2>
+          <p style="font-size:0.95em">OCP Java SE 17 Study Guide &bull; Lambda syntax, functional interfaces, and method references</p>
+          <ul>
+            <li>Translate anonymous classes into concise lambdas</li>
+            <li>Create and consume custom and built-in functional interfaces</li>
+            <li>Apply method references when lambdas delegate to existing methods</li>
+            <li>Manage lambda scope and effectively final variables</li>
+          </ul>
+          <p class="code-link"><a href="../../chapters/ch08-lambdas" target="_blank">Hands-on examples: chapters/ch08-lambdas</a></p>
+        </section>
+
+        <section>
+          <h3>Lambda Syntax</h3>
+          <ul>
+            <li>Parameter types may be explicit, inferred, or declared with `var` (but be consistent across the list)</li>
+            <li>Single-expression bodies omit braces and `return`; block bodies must `return` explicitly when required</li>
+            <li>Use parentheses for zero or many parameters; a single inferred parameter may omit them</li>
+            <li>Match the target functional interface signature—parameter count and return type must align</li>
+          </ul>
+          <p class="code-link">Syntax tour in <a href="../../chapters/ch08-lambdas/src/main/java/ch08/examples/LambdaSyntaxExamples.java" target="_blank">LambdaSyntaxExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Custom Functional Interfaces</h3>
+          <ul>
+            <li>A functional interface declares exactly one abstract method (SAM); annotate with `@FunctionalInterface` to detect mistakes</li>
+            <li>Default and static methods enrich the API without violating the SAM contract</li>
+            <li>Lambdas assign to functional interface references, enabling concise callbacks and strategy implementations</li>
+            <li>Functional interfaces can extend others as long as the SAM requirement holds</li>
+          </ul>
+          <p class="code-link">Custom SAMs in <a href="../../chapters/ch08-lambdas/src/main/java/ch08/examples/AnimalFilteringExamples.java" target="_blank">AnimalFilteringExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Built-in Functional Interfaces</h3>
+          <div class="two-column">
+            <div>
+              <strong>Core interfaces</strong>
+              <ul>
+                <li>`Predicate<T>` → boolean tests (`and`, `or`, `negate`)</li>
+                <li>`Function<T,R>` and `UnaryOperator<T>` for transformations</li>
+                <li>`Consumer<T>` and `BiConsumer<T,U>` for side-effect actions</li>
+              </ul>
+            </div>
+            <div>
+              <strong>Suppliers &amp; primitives</strong>
+              <ul>
+                <li>`Supplier<T>` defers value creation</li>
+                <li>Primitive specialisations (`IntPredicate`, `DoubleFunction`) avoid boxing</li>
+                <li>Compose functions via `andThen`, `compose`, and `identity()` helpers</li>
+              </ul>
+            </div>
+          </div>
+          <p class="code-link">Catalogue in <a href="../../chapters/ch08-lambdas/src/main/java/ch08/examples/BuiltInFunctionalExamples.java" target="_blank">BuiltInFunctionalExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Filtering &amp; Composition</h3>
+          <ul>
+            <li>Combine predicates to express complex rules (`p1.and(p2).negate()`)</li>
+            <li>Map from domain objects to projections with `Function` and reuse the same pipeline across collectors</li>
+            <li>Leverage method references for readability when lambda bodies simply delegate</li>
+            <li>Reuse functional interfaces in streams (`filter`, `map`, `forEach`) and optional chains</li>
+          </ul>
+          <p class="code-link">Animal filtering pipelines in <a href="../../chapters/ch08-lambdas/src/main/java/ch08/examples/AnimalFilteringExamples.java" target="_blank">AnimalFilteringExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Method References</h3>
+          <ul>
+            <li>`Type::staticMethod` for static calls, `object::instanceMethod` for bound receivers</li>
+            <li>`Type::instanceMethod` defers the receiver to the lambda parameter list</li>
+            <li>`Type::new` references constructors, useful for suppliers and factories</li>
+            <li>Use them whenever a lambda body simply delegates to an existing method for clarity</li>
+          </ul>
+          <p class="code-link">Reference patterns in <a href="../../chapters/ch08-lambdas/src/main/java/ch08/examples/MethodReferenceExamples.java" target="_blank">MethodReferenceExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Lambda Scope &amp; Effectively Final Variables</h3>
+          <ul>
+            <li>Lambdas capture local variables by value; captured variables must be effectively final</li>
+            <li>Reassigning captured locals is illegal—wrap mutable state in holders (`AtomicInteger`, arrays`) if needed</li>
+            <li>`this` and `super` inside a lambda refer to the enclosing instance, not to a synthetic lambda class</li>
+            <li>Avoid mutable shared state to keep lambda-based code thread-safe and deterministic</li>
+          </ul>
+          <p class="code-link">Scope rules in <a href="../../chapters/ch08-lambdas/src/main/java/ch08/examples/VariableScopeExamples.java" target="_blank">VariableScopeExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Key Takeaways</h3>
+          <ul>
+            <li>Match lambda signatures with functional interfaces and lean on `@FunctionalInterface` for validation</li>
+            <li>Prefer built-in `java.util.function` types for interoperability across APIs</li>
+            <li>Adopt method references when lambdas merely forward to existing methods</li>
+            <li>Keep captured variables effectively final to avoid compilation errors and concurrency bugs</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Further Exploration</h3>
+          <p style="font-size:0.9em">Carry these functional patterns into collections and streams.</p>
+          <ul>
+            <li><a href="../../chapters/ch08-lambdas" target="_blank">Chapter 8 module</a> &mdash; lambda syntax, functional interfaces, and method references</li>
+            <li><a href="../../chapters/ch09-collections-generics" target="_blank">Next: Chapter 9</a> to combine lambdas with collections and generics</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+        transition: 'slide'
+      });
+    </script>
+  </body>
+</html>

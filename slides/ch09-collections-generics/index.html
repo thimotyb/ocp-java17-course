@@ -1,0 +1,186 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Chapter 9 – Collections and Generics</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/moon.css" id="theme">
+    <style>
+      :root {
+        --r-background-color: #0b132b;
+        --r-main-color: #f0f4f8;
+        --r-heading-color: #ffd166;
+        --r-link-color: #118ab2;
+        --r-link-color-hover: #ef476f;
+        --r-selection-background-color: #ef476f;
+        --r-main-font: 'Segoe UI', 'Helvetica Neue', sans-serif;
+        --r-heading-font: 'Poppins', 'Helvetica Neue', sans-serif;
+        --r-heading-text-shadow: none;
+        --r-main-font-size: 30px;
+      }
+      .reveal section ul {
+        margin-left: 0;
+      }
+      .reveal section h3 {
+        margin-bottom: 0.6em;
+      }
+      .reveal section .two-column {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.2rem;
+      }
+      .reveal section code {
+        font-size: 0.9em;
+      }
+      .code-link {
+        margin-top: 0.8em;
+        font-size: 0.8em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h2>Chapter 9 &ndash; Collections and Generics</h2>
+          <p style="font-size:0.95em">OCP Java SE 17 Study Guide &bull; Collection APIs, sorting, and type-safe generics</p>
+          <ul>
+            <li>Select the right collection type for order, uniqueness, and access requirements</li>
+            <li>Apply sorting, searching, and comparator utilities</li>
+            <li>Design generic classes, methods, and wildcards for reuse</li>
+            <li>Avoid raw-type pitfalls and embrace type safety</li>
+          </ul>
+          <p class="code-link"><a href="../../chapters/ch09-collections-generics" target="_blank">Hands-on examples: chapters/ch09-collections-generics</a></p>
+        </section>
+
+        <section>
+          <h3>Collection Landscape</h3>
+          <div class="two-column">
+            <div>
+              <strong>List &amp; Set</strong>
+              <ul>
+                <li>`List` preserves order and allows duplicates (`ArrayList`, `LinkedList`)</li>
+                <li>`Set` removes duplicates—`HashSet` (no order), `LinkedHashSet` (insertion order), `TreeSet` (sorted)</li>
+                <li>`List.of()` and `Set.of()` create immutable collections</li>
+              </ul>
+            </div>
+            <div>
+              <strong>Queue &amp; Deque</strong>
+              <ul>
+                <li>`Queue` methods: `offer`, `poll`, `peek`—return `null` on failure instead of throwing</li>
+                <li>`Deque` supports stack operations: `push`, `pop`, `peekFirst/Last`</li>
+                <li>Prefer `ArrayDeque` over `Stack` for LIFO behaviour</li>
+              </ul>
+            </div>
+          </div>
+          <p class="code-link">Core operations in <a href="../../chapters/ch09-collections-generics/src/main/java/ch09/examples/ListExamples.java" target="_blank">ListExamples.java</a> and <a href="../../chapters/ch09-collections-generics/src/main/java/ch09/examples/SetQueueMapExamples.java" target="_blank">SetQueueMapExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Maps and Bulk Operations</h3>
+          <ul>
+            <li>`putIfAbsent`, `merge`, and `compute` simplify conditional updates</li>
+            <li>`NavigableMap`/`TreeMap` offer `higherKey`, `floorEntry`, `subMap` views</li>
+            <li>Iterate with `entrySet()` when both key and value are needed</li>
+            <li>Immutable map factories (`Map.of`, `Map.ofEntries`) throw on duplicate keys</li>
+          </ul>
+          <p class="code-link">Map helpers in <a href="../../chapters/ch09-collections-generics/src/main/java/ch09/examples/SetQueueMapExamples.java" target="_blank">SetQueueMapExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Sorting &amp; Searching</h3>
+          <ul>
+            <li>Implement `Comparable<T>` for natural ordering; ensure `compareTo` is consistent with `equals`</li>
+            <li>Use `Comparator` for custom orders (`thenComparing`, `reversed`, `comparingInt`)</li>
+            <li>`Collections.sort()` and `List.sort()` rely on the provided ordering</li>
+            <li>`Collections.binarySearch()` requires the list to be sorted with the same comparator</li>
+          </ul>
+          <p class="code-link">Comparator patterns in <a href="../../chapters/ch09-collections-generics/src/main/java/ch09/examples/ComparatorExamples.java" target="_blank">ComparatorExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Iterating Collections Safely</h3>
+          <ul>
+            <li>Enhanced for-loops call `Iterator` under the hood; do not structurally modify during iteration</li>
+            <li>Use `Iterator.remove()` (not `Collection.remove`) to avoid `ConcurrentModificationException`</li>
+            <li>`ListIterator` supports bidirectional traversal and element updates</li>
+            <li>Streams complement iterators with declarative pipelines—covered in Chapter 10</li>
+          </ul>
+          <p class="code-link">Iteration examples in <a href="../../chapters/ch09-collections-generics/src/main/java/ch09/examples/ListExamples.java" target="_blank">ListExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Designing Generic Types</h3>
+          <ul>
+            <li>Generic classes (`Crate<T>`) store type-safe values without casts</li>
+            <li>Generic methods declare type parameters before the return type (`<T> T identity(T value)`)</li>
+            <li>Bounds constrain type arguments: `T extends Number` (upper) and `T super Integer` (lower)</li>
+            <li>Type inference deduces arguments from context, but explicit types improve readability in complex cases</li>
+          </ul>
+          <p class="code-link">Generic constructs in <a href="../../chapters/ch09-collections-generics/src/main/java/ch09/examples/GenericsExamples.java" target="_blank">GenericsExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Wildcards &amp; Type Safety</h3>
+          <div class="two-column">
+            <div>
+              <strong>Upper bounds</strong>
+              <ul>
+                <li>`? extends T` is covariant and safe for reading, but disallows adds (except `null`)</li>
+                <li>Use for producers—when you only need to consume values</li>
+              </ul>
+            </div>
+            <div>
+              <strong>Lower bounds</strong>
+              <ul>
+                <li>`? super T` allows adding `T` (and subclasses) but returns `Object` when reading</li>
+                <li>Use for consumers—when you need to mutate the collection</li>
+              </ul>
+            </div>
+          </div>
+          <p class="code-link">Wildcard scenarios in <a href="../../chapters/ch09-collections-generics/src/main/java/ch09/examples/GenericsExamples.java" target="_blank">GenericsExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Raw Types &amp; Legacy Code</h3>
+          <ul>
+            <li>Raw types bypass compile-time checks and risk `ClassCastException` at runtime</li>
+            <li>Prefer generics with explicit type parameters for clarity and safety</li>
+            <li>When interfacing with legacy code, wrap or convert raw collections before exposing them</li>
+            <li>Suppress warnings sparingly and document why unchecked operations are safe</li>
+          </ul>
+          <p class="code-link">Raw-type pitfalls highlighted in <a href="../../chapters/ch09-collections-generics/src/main/java/ch09/examples/GenericsExamples.java" target="_blank">GenericsExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Key Takeaways</h3>
+          <ul>
+            <li>Choose collection implementations based on ordering, duplication, and concurrency needs</li>
+            <li>Keep collections sorted when using binary search or navigation helpers</li>
+            <li>Design generics with clear bounds and avoid raw types for safer APIs</li>
+            <li>Compose comparators and wildcards to maximise reuse across the collection hierarchy</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Further Exploration</h3>
+          <p style="font-size:0.9em">Bring these collections into functional pipelines in the next chapter.</p>
+          <ul>
+            <li><a href="../../chapters/ch09-collections-generics" target="_blank">Chapter 9 module</a> &mdash; lists, sets, maps, comparators, and generics</li>
+            <li><a href="../../chapters/ch10-streams" target="_blank">Next: Chapter 10 Streams</a></li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+        transition: 'slide'
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,186 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Chapter 6 – Class Design</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/moon.css" id="theme">
+    <style>
+      :root {
+        --r-background-color: #0b132b;
+        --r-main-color: #f0f4f8;
+        --r-heading-color: #ffd166;
+        --r-link-color: #06d6a0;
+        --r-link-color-hover: #ef476f;
+        --r-selection-background-color: #ef476f;
+        --r-main-font: 'Segoe UI', 'Helvetica Neue', sans-serif;
+        --r-heading-font: 'Poppins', 'Helvetica Neue', sans-serif;
+        --r-heading-text-shadow: none;
+        --r-main-font-size: 30px;
+      }
+      .reveal section ul {
+        margin-left: 0;
+      }
+      .reveal section h3 {
+        margin-bottom: 0.6em;
+      }
+      .reveal section .two-column {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.2rem;
+      }
+      .reveal section code {
+        font-size: 0.9em;
+      }
+      .code-link {
+        margin-top: 0.8em;
+        font-size: 0.8em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h2>Chapter 6 &ndash; Class Design</h2>
+          <p style="font-size:0.95em">OCP Java SE 17 Study Guide &bull; Inheritance, constructors, and abstract design</p>
+          <ul>
+            <li>Control inheritance hierarchies with `this` and `super`</li>
+            <li>Master constructor chaining and initialization order</li>
+            <li>Apply overriding, hiding, and access rules safely</li>
+            <li>Design abstract types that require concrete behaviour</li>
+          </ul>
+          <p class="code-link"><a href="../../chapters/ch06-class-design" target="_blank">Hands-on examples: chapters/ch06-class-design</a></p>
+        </section>
+
+        <section>
+          <h3>Inheritance Essentials</h3>
+          <ul>
+            <li>Child classes inherit accessible members from a single parent; `final` classes end the hierarchy</li>
+            <li>`this` resolves members in the current class; `super` reaches directly into the parent</li>
+            <li>Shadowing fields hides parent values but both copies exist—use `super.field` when needed</li>
+            <li>Constructors never inherit; each class defines its own initialization contract</li>
+          </ul>
+          <p class="code-link">See member access in <a href="../../chapters/ch06-class-design/src/main/java/ch06/examples/InheritanceExamples.java" target="_blank">InheritanceExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Constructor Rules</h3>
+          <ul>
+            <li>If no constructors exist, the compiler inserts a public no-arg constructor</li>
+            <li>`this(...)` chains to another constructor in the same class and must be the first statement</li>
+            <li>`super(...)` invokes the parent constructor; omitted calls default to `super()`</li>
+            <li>Constructor chaining cannot form cycles—each path must eventually hit a parent constructor</li>
+          </ul>
+          <p class="code-link">Constructor patterns in <a href="../../chapters/ch06-class-design/src/main/java/ch06/examples/ConstructorExamples.java" target="_blank">ConstructorExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Overloading vs. Default Constructors</h3>
+          <div class="two-column">
+            <div>
+              <strong>When provided</strong>
+              <ul>
+                <li>Any declared constructor suppresses the compiler-generated default</li>
+                <li>Provide explicit no-arg overloads when frameworks or tools require them</li>
+                <li>Private constructors restrict instantiation outside the class</li>
+              </ul>
+            </div>
+            <div>
+              <strong>Parameter ordering</strong>
+              <ul>
+                <li>Distinct signatures differ by parameter types/order, not return type</li>
+                <li>Varargs constructors must be last and can coexist with fixed-arity overloads</li>
+              </ul>
+            </div>
+          </div>
+          <p class="code-link">Rabbit and Gorilla listings in <a href="../../chapters/ch06-class-design/src/main/java/ch06/examples/ConstructorExamples.java" target="_blank">ConstructorExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Initialization Order</h3>
+          <ul>
+            <li>Static: parent static fields/blocks → child static fields/blocks (runs once per class)</li>
+            <li>Instance creation: parent instance fields/blocks → parent constructor → child fields/blocks → child constructor</li>
+            <li>Instance initializer blocks run before the constructor body and after field declarations</li>
+            <li>`final` fields must be assigned exactly once during this sequence</li>
+          </ul>
+          <p class="code-link">Trace sequences in <a href="../../chapters/ch06-class-design/src/main/java/ch06/examples/InitializationExamples.java" target="_blank">InitializationExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Final Fields &amp; Immutability</h3>
+          <ul>
+            <li>`final` instance fields initialize inline, in instance blocks, or inside constructors—choose exactly one</li>
+            <li>Static finals initialize in declarations or static blocks before any instance exists</li>
+            <li>Reassigning a `final` reference is illegal, but object state may still mutate unless defensive copies are used</li>
+            <li>Document initialization points to simplify maintenance and exam tracing</li>
+          </ul>
+          <p class="code-link">MouseHouse and ZooTickets in <a href="../../chapters/ch06-class-design/src/main/java/ch06/examples/InitializationExamples.java" target="_blank">InitializationExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Overriding Constraints</h3>
+          <ul>
+            <li>Same signature, equal-or-broader access, and no broader checked exceptions than the parent</li>
+            <li>Return types may be covariant (more specific) for objects, but primitives must match exactly</li>
+            <li>`@Override` catches signature mismatches early—use it liberally</li>
+            <li>Cannot override `final` methods or methods the child cannot see (e.g., `private`)</li>
+          </ul>
+          <p class="code-link">Rule demonstrations in <a href="../../chapters/ch06-class-design/src/main/java/ch06/examples/MethodInheritanceExamples.java" target="_blank">MethodInheritanceExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Hiding &amp; Shadowing</h3>
+          <ul>
+            <li>Static methods and fields are hidden, not overridden; the reference type determines which member runs</li>
+            <li>Instance fields with the same name coexist—`this.field` vs `super.field` resolves which value</li>
+            <li>Attempting to reduce visibility or add checked exceptions in overrides leads to compilation errors</li>
+            <li>Maintain consistent APIs across hierarchies to avoid confusing shadowed members</li>
+          </ul>
+          <p class="code-link">Static hiding and field shadowing in <a href="../../chapters/ch06-class-design/src/main/java/ch06/examples/MethodInheritanceExamples.java" target="_blank">MethodInheritanceExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Abstract Classes</h3>
+          <ul>
+            <li>Abstract classes may mix abstract and concrete members but cannot be instantiated</li>
+            <li>The first concrete subclass must implement every inherited abstract method</li>
+            <li>Abstract constructors run before subclass constructors, enabling shared setup</li>
+            <li>Use abstract methods to force specialisation while supplying default behaviour via concrete methods</li>
+          </ul>
+          <p class="code-link">Canine and BigCat hierarchy in <a href="../../chapters/ch06-class-design/src/main/java/ch06/examples/AbstractExamples.java" target="_blank">AbstractExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Key Takeaways</h3>
+          <ul>
+            <li>Track constructor chaining and initialization order to predict runtime state</li>
+            <li>Distinguish overriding from hiding; mind access levels and checked exceptions</li>
+            <li>Assign `final` fields once and prefer explicit initialization to satisfy the compiler</li>
+            <li>Use abstract classes when you need partial implementations and enforced specialisation</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Further Exploration</h3>
+          <p style="font-size:0.9em">Reinforce the patterns with the repository listings and upcoming chapters.</p>
+          <ul>
+            <li><a href="../../chapters/ch06-class-design" target="_blank">Chapter 6 module</a> &mdash; constructors, initialization, overriding, and abstract design</li>
+            <li><a href="../../slides/ch07-beyond-classes/index.html" target="_blank">Next slides: Chapter 7</a> (once generated)</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+        transition: 'slide'
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,175 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Chapter 7 – Beyond Classes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/moon.css" id="theme">
+    <style>
+      :root {
+        --r-background-color: #0b132b;
+        --r-main-color: #f0f4f8;
+        --r-heading-color: #ef476f;
+        --r-link-color: #118ab2;
+        --r-link-color-hover: #ffd166;
+        --r-selection-background-color: #ffd166;
+        --r-main-font: 'Segoe UI', 'Helvetica Neue', sans-serif;
+        --r-heading-font: 'Poppins', 'Helvetica Neue', sans-serif;
+        --r-heading-text-shadow: none;
+        --r-main-font-size: 30px;
+      }
+      .reveal section ul {
+        margin-left: 0;
+      }
+      .reveal section h3 {
+        margin-bottom: 0.6em;
+      }
+      .reveal section .two-column {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.2rem;
+      }
+      .reveal section code {
+        font-size: 0.9em;
+      }
+      .code-link {
+        margin-top: 0.8em;
+        font-size: 0.8em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h2>Chapter 7 &ndash; Beyond Classes</h2>
+          <p style="font-size:0.95em">OCP Java SE 17 Study Guide &bull; Interfaces, enums, records, sealed types, and nested classes</p>
+          <ul>
+            <li>Leverage interfaces and functional interfaces with default and static behaviour</li>
+            <li>Model immutable data with enums and records</li>
+            <li>Control inheritance using sealed hierarchies</li>
+            <li>Work with nested, inner, local, and anonymous classes safely</li>
+          </ul>
+          <p class="code-link"><a href="../../chapters/ch07-beyond-classes" target="_blank">Hands-on examples: chapters/ch07-beyond-classes</a></p>
+        </section>
+
+        <section>
+          <h3>Interface Building Blocks</h3>
+          <ul>
+            <li>Interface fields are implicitly `public static final`; abstract methods are implicitly `public abstract`</li>
+            <li>Classes implement any number of interfaces; interfaces may extend multiple parents</li>
+            <li>The first concrete class must implement every inherited abstract method</li>
+            <li>Use interfaces to define behaviour contracts without committing to inheritance hierarchies</li>
+          </ul>
+          <p class="code-link">Basics shown in <a href="../../chapters/ch07-beyond-classes/src/main/java/ch07/examples/InterfaceBasicsExamples.java" target="_blank">InterfaceBasicsExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Default, Static, and Private Interface Methods</h3>
+          <ul>
+            <li>Default methods supply reusable behaviour; conflicts must be resolved by overriding</li>
+            <li>Static methods belong to the interface type and are invoked with the interface name</li>
+            <li>Private interface methods support implementation reuse across default methods in the same interface</li>
+            <li>Implementations choose which default behaviour to keep when multiple interfaces define the same signature</li>
+          </ul>
+          <p class="code-link">Feature catalog in <a href="../../chapters/ch07-beyond-classes/src/main/java/ch07/examples/InterfaceFeatureExamples.java" target="_blank">InterfaceFeatureExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Functional Interfaces &amp; Lambdas</h3>
+          <ul>
+            <li>A functional interface declares exactly one abstract method—annotate with `@FunctionalInterface` to enforce the contract</li>
+            <li>Default and static methods do not violate the single-abstract-method rule</li>
+            <li>Lambdas and method references provide concise implementations targeting functional interfaces</li>
+            <li>Combine interfaces to describe capabilities and reuse common behaviour</li>
+          </ul>
+          <p class="code-link">Examples in <a href="../../chapters/ch07-beyond-classes/src/main/java/ch07/examples/FunctionalInterfaceExamples.java" target="_blank">FunctionalInterfaceExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Enums as Type-Safe Constants</h3>
+          <ul>
+            <li>Enum constants are `public static final` instances; construct them with optional arguments</li>
+            <li>Enums can declare fields, methods, and constructors, even abstract methods overridden per constant</li>
+            <li>Use `values()`, `valueOf()`, and switch expressions for exhaustive handling</li>
+            <li>Leverage enum-specific methods (`ordinal`, `name`) cautiously&mdash;they are tied to declaration order</li>
+          </ul>
+          <p class="code-link">Enum strategies in <a href="../../chapters/ch07-beyond-classes/src/main/java/ch07/examples/EnumExamples.java" target="_blank">EnumExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Records for Immutable Data</h3>
+          <ul>
+            <li>Records automatically supply a canonical constructor, accessors, `equals`, `hashCode`, and `toString`</li>
+            <li>State components are `private final`; customise validation via compact or canonical constructors</li>
+            <li>Additional methods and static members behave like those on regular classes</li>
+            <li>Records can implement interfaces but cannot extend classes</li>
+          </ul>
+          <p class="code-link">Record patterns in <a href="../../chapters/ch07-beyond-classes/src/main/java/ch07/examples/RecordExamples.java" target="_blank">RecordExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Sealed Classes and Interfaces</h3>
+          <ul>
+            <li>`sealed` types restrict permitted subclasses via `permits` lists</li>
+            <li>Permitted subclasses must be `final`, `sealed`, or `non-sealed` to describe further inheritance</li>
+            <li>Combine with switch pattern matching to exhaustively handle known variants</li>
+            <li>Balance extensibility with control by choosing which packages can extend a type</li>
+          </ul>
+          <p class="code-link">Sealed zoo examples in <a href="../../chapters/ch07-beyond-classes/src/main/java/ch07/examples/SealedExamples.java" target="_blank">SealedExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Encapsulation &amp; Immutability</h3>
+          <ul>
+            <li>Keep mutable fields `private` and expose defensive copies or read-only views</li>
+            <li>Constructors (or factory methods) should validate mandatory state</li>
+            <li>Use helper builders or records to avoid telescoping constructors when state grows</li>
+            <li>Favour immutable data for thread safety and predictable behaviour</li>
+          </ul>
+          <p class="code-link">Design guidelines in <a href="../../chapters/ch07-beyond-classes/src/main/java/ch07/examples/EncapsulationExamples.java" target="_blank">EncapsulationExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Nested, Inner, Local &amp; Anonymous Classes</h3>
+          <ul>
+            <li>Static nested classes act like top-level classes scoped within the outer type</li>
+            <li>Inner classes capture an outer instance; instantiate with `outer.new Inner()`</li>
+            <li>Local and anonymous classes live inside methods and can access effectively final variables</li>
+            <li>Anonymous classes excel for one-off behaviour where lambdas are not applicable</li>
+          </ul>
+          <p class="code-link">Type varieties in <a href="../../chapters/ch07-beyond-classes/src/main/java/ch07/examples/NestedTypeExamples.java" target="_blank">NestedTypeExamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Key Takeaways</h3>
+          <ul>
+            <li>Interfaces define capability contracts; default methods help evolve APIs while preserving compatibility</li>
+            <li>Records and enums deliver concise, immutable models for domain data</li>
+            <li>Sealed types constrain inheritance for safer pattern matching</li>
+            <li>Choose the appropriate nested type to balance encapsulation and access needs</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Further Exploration</h3>
+          <p style="font-size:0.9em">Connect these constructs with lambdas and streams in subsequent chapters.</p>
+          <ul>
+            <li><a href="../../chapters/ch07-beyond-classes" target="_blank">Chapter 7 module</a> &mdash; interfaces, enums, records, sealed and nested types</li>
+            <li><a href="../../chapters/ch08-lambdas" target="_blank">Continue with Chapter 8</a> to apply functional programming concepts</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+        transition: 'slide'
+      });
+    </script>
+  </body>
+</html>
