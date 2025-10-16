@@ -8,3 +8,4 @@
 | [Chapter 4 – Core APIs](chapters/ch04-core-apis/README.md) | `chapters/ch04-core-apis` | Strings, StringBuilder, arrays, formatting, and java.time date/time handling. |
 | [Chapter 5 – Methods](chapters/ch05-methods/README.md) | `chapters/ch05-methods` | Method declarations, access control, varargs, static members, pass-by-value, and overloading. |
 | [Chapter 6 – Class Design](chapters/ch06-class-design/README.md) | `chapters/ch06-class-design` | Inheritance, constructors, initialization order, overriding vs. hiding, and abstract classes. |
+| [Chapter 7 – Beyond Classes](chapters/ch07-beyond-classes/README.md) | `chapters/ch07-beyond-classes` | Interfaces, functional interfaces, enums, records, sealed types, and nested classes. |
