@@ -18,6 +18,7 @@
     <module>chapters/ch09-collections-generics</module>
     <module>chapters/ch10-streams</module>
     <module>chapters/ch11-exceptions-localization</module>
+    <module>chapters/ch12-modules</module>
   </modules>
 
   <properties>

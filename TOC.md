@@ -13,3 +13,4 @@
 | [Chapter 9 – Collections and Generics](chapters/ch09-collections-generics/README.md) | `chapters/ch09-collections-generics` | Lists, sets, queues, maps, comparators, and generic classes/methods with wildcards. |
 | [Chapter 10 – Streams](chapters/ch10-streams/README.md) | `chapters/ch10-streams` | Stream pipelines, Optional usage, primitive streams, collectors, and reduction operations. |
 | [Chapter 11 – Exceptions and Localization](chapters/ch11-exceptions-localization/README.md) | `chapters/ch11-exceptions-localization` | Exception handling patterns, try-with-resources, and locale/resource bundle formatting. |
+| [Chapter 12 – Modules](chapters/ch12-modules/README.md) | `chapters/ch12-modules` | Module descriptors, module path tooling, services, and module reflection. |
