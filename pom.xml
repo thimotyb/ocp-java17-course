@@ -20,6 +20,7 @@
     <module>chapters/ch11-exceptions-localization</module>
     <module>chapters/ch12-modules</module>
     <module>chapters/ch13-concurrency</module>
+    <module>chapters/ch14-io</module>
   </modules>
 
   <properties>
