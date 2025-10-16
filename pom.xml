@@ -21,6 +21,7 @@
     <module>chapters/ch12-modules</module>
     <module>chapters/ch13-concurrency</module>
     <module>chapters/ch14-io</module>
+    <module>chapters/ch15-jdbc</module>
   </modules>
 
   <properties>

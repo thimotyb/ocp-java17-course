@@ -16,3 +16,4 @@
 | [Chapter 12 – Modules](chapters/ch12-modules/README.md) | `chapters/ch12-modules` | Module descriptors, module path tooling, services, and module reflection. |
 | [Chapter 13 – Concurrency](chapters/ch13-concurrency/README.md) | `chapters/ch13-concurrency` | Thread creation, executor services, synchronization, and parallel streams. |
 | [Chapter 14 – I/O](chapters/ch14-io/README.md) | `chapters/ch14-io` | NIO.2 path operations, streams/readers, file attributes, and serialization. |
+| [Chapter 15 – JDBC](chapters/ch15-jdbc/README.md) | `chapters/ch15-jdbc` | JDBC connections, statements, transactions, and metadata. |
