@@ -32,10 +32,10 @@
 - Guarded pattern matching (`case String s when s.length() > 5 ->`) allows additional boolean filters in switch expressions.
 
 ## Practical Exercises
-1. **If/else routing** – Implement `ch03/ifelse/WeatherAdvisor.java` that chooses a message based on conditions, including pattern matching on an `Object` input.
-2. **Switch statements with fall-through** – Create `ch03/switching/LegacySwitchPlanner.java` showing grouped `case` labels, fall-through, and `default` behaviour.
-3. **Switch expressions** – Build `ch03/switching/SwitchExpressionAdvisor.java` returning values via arrow labels and `yield` blocks.
-4. **Pattern matching and guards** – Write `ch03/pattern/PatternDispatcher.java` that uses `instanceof` pattern matching and guarded switch cases.
+1. **If/else routing** – Step through `IfExamples` under `ch03.examples` to observe how chain ordering and braces affect execution. Extend it with additional branches and trace the output.
+2. **Switch statements** – Compare `DayOfWeekStatement` and `DayOfWeekExpression` to see the difference between classic and expression-based `switch`. Add new cases for other values.
+3. **Loop control with labels** – Execute `CleaningSchedule`, `FindInMatrix`, and `FindInMatrixUsingReturn` to study labeled `break` and `continue` as well as early `return`.
+4. **Pattern guards and do/while** – Explore `FishTank` and `PrintIntegers` to reinforce pattern matching behavior and `do/while` ordering.
 
 ## Run the Examples
 ```bash
@@ -46,11 +46,13 @@ sdk use java 17.0.14-tem
 # Compile the module
 mvn -pl chapters/ch03-making-decisions compile
 
-# Run the chapter showcase
-java -cp chapters/ch03-making-decisions/target/classes ch03.DecisionsShowcase
+# Run selected book listings
+java -cp chapters/ch03-making-decisions/target/classes ch03.examples.CleaningSchedule
+java -cp chapters/ch03-making-decisions/target/classes ch03.examples.FindInMatrix
+java -cp chapters/ch03-making-decisions/target/classes ch03.examples.PrintIntegers
 
-# Execute focused tests
-mvn -pl chapters/ch03-making-decisions -Dtest=SwitchExpressionAdvisorTest test
+# Execute the chapter-aligned tests
+mvn -pl chapters/ch03-making-decisions -Dtest='ch03.examples.*Test' test
 ```
 
 ## Exam Prep (1Z0-829 style)
@@ -108,6 +110,6 @@ mvn -pl chapters/ch03-making-decisions -Dtest=SwitchExpressionAdvisorTest test
 </details>
 
 ## Next Steps
-- Implement the exercises under `src/main/java` and `src/test/java` to deepen understanding of branches and switch constructs.
-- Explore additional guards (`when`) and nested decision structures to prepare for trickier exam questions.
-- Re-run `mvn -pl chapters/ch03-making-decisions test` after expanding the examples to keep the module green.
+- Continue extracting additional decision-making listings (for example, more `switch` samples or label variations) into `ch03.examples`.
+- Keep iterating on the tests to mirror the behaviour described in the book, adding assertions for new scenarios.
+- Re-run `mvn -pl chapters/ch03-making-decisions test` whenever new snippets are added to ensure everything compiles and runs.

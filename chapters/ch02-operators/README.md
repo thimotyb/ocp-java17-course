@@ -30,10 +30,10 @@
 - The ternary operator `condition ? a : b` selects between two expressions and participates in type inference.
 
 ## Practical Exercises
-1. **Precedence walkthrough** – Implement `ch02/arithmetic/PrecedenceCalculator.java` with helper methods that compute multi-operator expressions and expose side effects so you can trace evaluation order.
-2. **Compound assignments in practice** – Build `ch02/assignment/CompoundOperations.java` to demonstrate how compound operators perform implicit casts and avoid overflow.
-3. **Short-circuit diagnostics** – Create `ch02/logical/ShortCircuitTrainer.java` that compares `&` versus `&&` using counters and Java functional interfaces.
-4. **Equality lab** – Write `ch02/comparison/ComparisonPlayground.java` highlighting differences between `==`, `.equals()`, and `instanceof` pattern matching using wrappers, strings, and custom records.
+1. **Precedence walkthrough** – Run `OperatorReward`, `OperatorIncrement`, and `OperatorPerimeter` under `ch02.examples` to trace how pre/post operators and parentheses affect evaluation.
+2. **Numeric promotion checks** – Experiment with `OperatorPrice`, `OperatorDivisionModulus`, and `OperatorSamples` to observe promotion rules and modulus behaviour.
+3. **Boolean logic and ternaries** – Study `OperatorCanine`, `OperatorWaterQuality`, and `OperatorTernary` to review XOR, short-circuiting, and nested ternary expressions.
+4. **Type casting drill** – Use `OperatorPig` to see how compound assignments perform implicit casts. Extend the example to include additional casts.
 
 ## Run the Examples
 ```bash
@@ -44,11 +44,13 @@ sdk use java 17.0.14-tem
 # Compile the module
 mvn -pl chapters/ch02-operators compile
 
-# Run the console showcase
-java -cp chapters/ch02-operators/target/classes ch02.OperatorsShowcase
+# Run selected listings from the book
+java -cp chapters/ch02-operators/target/classes ch02.examples.OperatorReward
+java -cp chapters/ch02-operators/target/classes ch02.examples.OperatorIncrement
+java -cp chapters/ch02-operators/target/classes ch02.examples.OperatorPig
 
-# Execute the focused tests
-mvn -pl chapters/ch02-operators -Dtest=ShortCircuitTrainerTest test
+# Execute the chapter-aligned tests
+mvn -pl chapters/ch02-operators -Dtest='ch02.examples.*Test' test
 ```
 
 ## Exam Prep (1Z0-829 style)
@@ -89,6 +91,6 @@ mvn -pl chapters/ch02-operators -Dtest=ShortCircuitTrainerTest test
 </details>
 
 ## Next Steps
-- Flesh out the exercises under `src/main/java` and `src/test/java` for this module.
-- Run `mvn -pl chapters/ch02-operators test` after coding the examples to ensure all operators behave as expected.
-- Experiment with additional operator combos (bitwise, shifts) to deepen your intuition beyond the exam scope.
+- Continue extracting remaining operator snippets (for example, additional numeric promotion or shift examples) into `ch02.examples`.
+- Add assertions to the existing tests whenever you discover new behaviours or edge cases discussed in the text.
+- Explore bitwise and shift operators as you encounter them later in the chapter, keeping the examples package aligned with the book.
