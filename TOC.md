@@ -12,3 +12,4 @@
 | [Chapter 8 – Lambdas and Functional Interfaces](chapters/ch08-lambdas/README.md) | `chapters/ch08-lambdas` | Lambda syntax, functional interfaces, java.util.function usage, method references, and variable scope. |
 | [Chapter 9 – Collections and Generics](chapters/ch09-collections-generics/README.md) | `chapters/ch09-collections-generics` | Lists, sets, queues, maps, comparators, and generic classes/methods with wildcards. |
 | [Chapter 10 – Streams](chapters/ch10-streams/README.md) | `chapters/ch10-streams` | Stream pipelines, Optional usage, primitive streams, collectors, and reduction operations. |
+| [Chapter 11 – Exceptions and Localization](chapters/ch11-exceptions-localization/README.md) | `chapters/ch11-exceptions-localization` | Exception handling patterns, try-with-resources, and locale/resource bundle formatting. |
