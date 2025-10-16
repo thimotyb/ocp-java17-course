@@ -1,0 +1,276 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Chapter 2 – Operators</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/moon.css" id="theme">
+    <style>
+      :root {
+        --r-background-color: #0b132b;
+        --r-main-color: #f0f4f8;
+        --r-heading-color: #f7b801;
+        --r-link-color: #8ecae6;
+        --r-link-color-hover: #ffb703;
+        --r-selection-background-color: #ffb703;
+        --r-main-font: 'Segoe UI', 'Helvetica Neue', sans-serif;
+        --r-heading-font: 'Poppins', 'Helvetica Neue', sans-serif;
+        --r-heading-text-shadow: none;
+        --r-main-font-size: 30px;
+      }
+      .reveal section ul {
+        margin-left: 0;
+      }
+      .reveal section h3 {
+        margin-bottom: 0.6em;
+      }
+      .reveal section .two-column {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.2rem;
+      }
+      .reveal section code {
+        font-size: 0.9em;
+      }
+      .code-link {
+        margin-top: 0.8em;
+        font-size: 0.8em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h2>Chapter 2 &ndash; Operators</h2>
+          <p style="font-size:0.95em">OCP Java SE 17 Study Guide &bull; Operator precedence and evaluation flow</p>
+          <ul>
+            <li>Classify unary, binary, and ternary operators and predict evaluation order</li>
+            <li>Apply numeric promotion, casting, and compound assignments without losing information</li>
+            <li>Compare primitives and references with equality, relational, and <code>instanceof</code></li>
+            <li>Control boolean flow with logical, conditional, and ternary operators</li>
+          </ul>
+          <p class="code-link"><a href="../../chapters/ch02-operators" target="_blank">Hands-on examples: chapters/ch02-operators</a></p>
+        </section>
+
+        <section>
+          <h3>Operator Landscape</h3>
+          <ul>
+            <li>An operator combines operands (values, variables, literals) and yields a result</li>
+            <li>Java defines unary (one operand), binary (two), and ternary (three) forms</li>
+            <li>Expressions may chain many operators; precedence and associativity govern evaluation</li>
+            <li>Assignment (<code>=</code>) runs last and associates right-to-left, storing the computed result</li>
+            <li>Stay alert for exam expressions that mix arithmetic and assignment to mask side effects</li>
+          </ul>
+          <p class="code-link">Precedence in action: <a href="../../chapters/ch02-operators/src/main/java/ch02/examples/OperatorReward.java" target="_blank">OperatorReward.java</a></p>
+        </section>
+
+        <section>
+          <h3>Precedence &amp; Associativity</h3>
+          <div class="two-column">
+            <div>
+              <strong>Higher precedence</strong>
+              <ul>
+                <li>Post-unary <code>expr++</code>, <code>expr--</code></li>
+                <li>Pre-unary <code>++expr</code>, <code>--expr</code>, <code>!</code>, <code>~</code>, casts</li>
+                <li>Multiplicative <code>*</code>, <code>/</code>, <code>%</code></li>
+                <li>Additive <code>+</code>, <code>-</code></li>
+              </ul>
+            </div>
+            <div>
+              <strong>Lower precedence</strong>
+              <ul>
+                <li>Shifts, relational, and equality operators</li>
+                <li>Logical <code>&amp;</code>, <code>^</code>, <code>|</code> then conditional <code>&amp;&amp;</code>, <code>||</code></li>
+                <li>Ternary <code>? :</code> evaluates right-to-left</li>
+                <li>Assignments (including compound forms) associate right-to-left</li>
+              </ul>
+            </div>
+          </div>
+          <ul>
+            <li>Parentheses override the default order; use them liberally when reading dense exam code</li>
+            <li>The arrow operator (<code>-&gt;</code>) appears in switch expressions and lambdas later in the book</li>
+          </ul>
+          <p class="code-link">Compare evaluations in <a href="../../chapters/ch02-operators/src/main/java/ch02/examples/OperatorPerimeter.java" target="_blank">OperatorPerimeter.java</a></p>
+        </section>
+
+        <section>
+          <h3>Unary Operators</h3>
+          <ul>
+            <li>Logical complement (<code>!</code>) flips a boolean; bitwise complement (<code>~</code>) flips all bits of an integral value</li>
+            <li>Unary plus/minus signal sign; applying minus twice requires parentheses to avoid the decrement operator</li>
+            <li>Pre/post increment/decrement adjust numeric operands by one and execute before/after the surrounding expression</li>
+            <li>Type-specific: you cannot negate a boolean or apply <code>!</code> to numeric operands &mdash; such code fails compilation</li>
+            <li>Casts (<code>(type) value</code>) are unary but discussed with assignments where they are most often used</li>
+          </ul>
+          <p class="code-link">Prefix and postfix walkthrough: <a href="../../chapters/ch02-operators/src/main/java/ch02/examples/OperatorIncrement.java" target="_blank">OperatorIncrement.java</a></p>
+        </section>
+
+        <section>
+          <h3>Pre- vs Post-Increment</h3>
+          <pre><code data-trim>
+int parkAttendance = 0;
+System.out.println(++parkAttendance); // prints 1, value becomes 1
+System.out.println(parkAttendance--); // prints 1, value becomes 0
+          </code></pre>
+          <ul>
+            <li>Prefix applies before the rest of the expression; postfix returns the original value and updates afterward</li>
+            <li>Mixing multiple increments on the same variable in one statement is legal but exam traps rely on the evaluation order</li>
+            <li>Both forms have higher precedence than binary arithmetic; evaluate them first when tracing expressions</li>
+          </ul>
+          <p class="code-link">Full output trace in <a href="../../chapters/ch02-operators/src/main/java/ch02/examples/OperatorIncrement.java" target="_blank">OperatorIncrement.java</a></p>
+        </section>
+
+        <section>
+          <h3>Arithmetic &amp; Parentheses</h3>
+          <div class="two-column">
+            <div>
+              <strong>Default order</strong>
+              <ul>
+                <li>Multiplication, division, modulus precede addition and subtraction</li>
+                <li>Integer division truncates toward zero; modulus returns the remainder</li>
+                <li>Overflow wraps within the target type without raising an error</li>
+              </ul>
+            </div>
+            <div>
+              <strong>Parentheses help</strong>
+              <ul>
+                <li>Group terms to change evaluation or clarify intent</li>
+                <li>Ensure parentheses are balanced; brackets <code>[]</code> cannot replace <code>()</code></li>
+                <li>Use parentheses when mixing arithmetic with pre/post operators for readability</li>
+              </ul>
+            </div>
+          </div>
+          <p class="code-link">Compare listings: <a href="../../chapters/ch02-operators/src/main/java/ch02/examples/OperatorPrice.java" target="_blank">OperatorPrice.java</a> &amp; <a href="../../chapters/ch02-operators/src/main/java/ch02/examples/OperatorDivisionModulus.java" target="_blank">OperatorDivisionModulus.java</a></p>
+        </section>
+
+        <section>
+          <h3>Numeric Promotion Rules</h3>
+          <ul>
+            <li>If operand types differ, Java promotes to the wider type before evaluation</li>
+            <li>Mixed integral and floating-point expressions promote the integral value to the floating type</li>
+            <li><code>byte</code>, <code>short</code>, and <code>char</code> promote to <code>int</code> for binary arithmetic, even when paired together</li>
+            <li>The expression result adopts the promoted operand type; assigning back to a narrower type requires a cast</li>
+            <li>Unary operators (<code>++</code>, <code>--</code>) keep the original type, which distinguishes them from binary evaluation</li>
+          </ul>
+          <p class="code-link">Trace promotions with <a href="../../chapters/ch02-operators/src/main/java/ch02/examples/OperatorSamples.java" target="_blank">OperatorSamples.java</a></p>
+        </section>
+
+        <section>
+          <h3>Casting &amp; Narrowing Pitfalls</h3>
+          <ul>
+            <li>Explicit casts (<code>(short) value</code>) are required when converting to a smaller primitive type</li>
+            <li>The compiler rejects out-of-range literals before casting (for example, an <code>int</code> literal that exceeds <code>int</code>)</li>
+            <li>Narrowing may lose data through truncation or overflow; exam questions often rely on this wraparound</li>
+            <li>Cast only the intended expression &mdash; without parentheses, only the next token is affected</li>
+            <li>Casting objects changes the reference type, not the underlying object; numeric casts alter the value representation</li>
+          </ul>
+          <p class="code-link">See casts and overflow discussion in <a href="../../chapters/ch02-operators/src/main/java/ch02/examples/OperatorPig.java" target="_blank">OperatorPig.java</a></p>
+        </section>
+
+        <section>
+          <h3>Compound Assignments</h3>
+          <ul>
+            <li>Forms like <code>+=</code>, <code>*=</code>, <code>&amp;=</code>, and <code>&gt;&gt;=</code> combine an operation with assignment</li>
+            <li>The left operand must already exist; compound operators cannot declare variables</li>
+            <li>Java promotes operands, performs the operation, then automatically casts the result back to the left type</li>
+            <li>This implicit cast lets <code>int</code> interact with <code>long</code> or <code>double</code> without explicit narrowing, but information may still be lost</li>
+            <li>Remember: compound assignment still evaluates right-to-left like simple assignment</li>
+          </ul>
+          <p class="code-link">Implicit narrowing example: <a href="../../chapters/ch02-operators/src/main/java/ch02/examples/OperatorPig.java" target="_blank">OperatorPig.java</a></p>
+        </section>
+
+        <section>
+          <h3>Assignments Return Values</h3>
+          <ul>
+            <li>Every assignment expression evaluates to the assigned value, enabling chained assignments</li>
+            <li>Exam trick: <code>if (healthy = true)</code> assigns then evaluates to <code>true</code>, so the branch executes</li>
+            <li>Embedding assignments inside logical expressions can change state before comparisons occur</li>
+            <li>Trace side effects carefully wherever you see <code>=</code> inside boolean tests or arithmetic</li>
+          </ul>
+          <p class="code-link">Side-effect spotlight in <a href="../../chapters/ch02-operators/src/main/java/ch02/examples/OperatorCanine.java" target="_blank">OperatorCanine.java</a></p>
+        </section>
+
+        <section>
+          <h3>Equality &amp; Relational Checks</h3>
+          <ul>
+            <li><code>==</code> / <code>!=</code> compare primitives by value but compare references by object identity (or both <code>null</code>)</li>
+            <li>Never mix unrelated types with equality (for example, boolean vs String); the compiler rejects mismatched operands</li>
+            <li>Relational operators (<code>&lt;</code>, <code>&lt;=</code>, <code>&gt;</code>, <code>&gt;=</code>) apply to numeric types after promotion</li>
+            <li><code>instanceof</code> checks runtime type compatibility; incompatible types fail compilation and <code>null instanceof Type</code> is always <code>false</code></li>
+            <li>Use parentheses around post-increment/decrement when combining with relational tests to clarify evaluation</li>
+          </ul>
+          <p class="code-link">Boolean comparisons in <a href="../../chapters/ch02-operators/src/main/java/ch02/examples/OperatorWaterQuality.java" target="_blank">OperatorWaterQuality.java</a></p>
+        </section>
+
+        <section>
+          <h3>Logical Operators</h3>
+          <div class="two-column">
+            <div>
+              <strong>Non-short-circuit</strong>
+              <ul>
+                <li><code>&amp;</code> and <code>|</code> always evaluate both operands</li>
+                <li><code>^</code> is true only when operands differ</li>
+                <li>Use truth tables to predict outcomes under all boolean combinations</li>
+              </ul>
+            </div>
+            <div>
+              <strong>Short-circuit</strong>
+              <ul>
+                <li><code>&amp;&amp;</code> stops evaluation when the left operand is false</li>
+                <li><code>||</code> stops evaluation when the left operand is true</li>
+                <li>Skipped operands mean skipped side effects (increments, method calls, etc.)</li>
+              </ul>
+            </div>
+          </div>
+          <p class="code-link">XOR and short-circuit interplay in <a href="../../chapters/ch02-operators/src/main/java/ch02/examples/OperatorCanine.java" target="_blank">OperatorCanine.java</a> &amp; <a href="../../chapters/ch02-operators/src/main/java/ch02/examples/OperatorWaterQuality.java" target="_blank">OperatorWaterQuality.java</a></p>
+        </section>
+
+        <section>
+          <h3>Ternary Operator</h3>
+          <pre><code data-trim>
+var food = owlCount < 2 ? 3 : 4;
+var label = value > 0 ? "positive" : value == 0 ? "zero" : "negative";
+          </code></pre>
+          <ul>
+            <li>Structure: <code>booleanExpression ? expression1 : expression2</code></li>
+            <li>Exactly one branch runs; the other branch (and its side effects) is ignored</li>
+            <li>Nesting ternaries is legal but quickly harms readability&mdash;add parentheses to make intent explicit</li>
+            <li>When used in assignments, both result expressions must ultimately be compatible with the target type</li>
+          </ul>
+          <p class="code-link">Nested examples in <a href="../../chapters/ch02-operators/src/main/java/ch02/examples/OperatorTernary.java" target="_blank">OperatorTernary.java</a></p>
+        </section>
+
+        <section>
+          <h3>Key Takeaways</h3>
+          <ul>
+            <li>Memorise precedence groups and rely on parentheses when tracing dense expressions</li>
+            <li>Track numeric promotions to avoid accidental narrowing or silent overflow</li>
+            <li>Recognise assignment side effects inside boolean logic as common exam traps</li>
+            <li>Short-circuit operators and ternaries may skip code; ensure required work happens before the decision point</li>
+            <li>Distinguish primitive equality, reference identity, and type checks with <code>instanceof</code></li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Further Exploration</h3>
+          <p style="font-size:0.9em">Reinforce each operator category with the repository code and quizzes.</p>
+          <ul>
+            <li><a href="../../chapters/ch02-operators" target="_blank">Chapter 2 module</a> &mdash; README, examples, exercises, and quizzes</li>
+            <li><a href="../../chapters" target="_blank">Chapters directory</a> to continue through subsequent topics</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        slideNumber: true,
+        transition: 'slide'
+      });
+    </script>
+  </body>
+</html>
