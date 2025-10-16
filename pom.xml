@@ -12,6 +12,7 @@
     <module>chapters/ch03-making-decisions</module>
     <module>chapters/ch04-core-apis</module>
     <module>chapters/ch05-methods</module>
+    <module>chapters/ch06-class-design</module>
   </modules>
 
   <properties>
