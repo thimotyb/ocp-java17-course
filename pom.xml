@@ -16,6 +16,7 @@
     <module>chapters/ch07-beyond-classes</module>
     <module>chapters/ch08-lambdas</module>
     <module>chapters/ch09-collections-generics</module>
+    <module>chapters/ch10-streams</module>
   </modules>
 
   <properties>
