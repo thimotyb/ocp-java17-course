@@ -63,7 +63,7 @@
             <li>Since Java 9, distributable runtimes can be created with <code>jlink</code> using modules you require</li>
             <li>Set <code>CLASSPATH</code> or module path so the JVM can find dependencies at runtime</li>
           </ul>
-          <p class="code-link">Command workflow in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/ToolchainDemo.java" target="_blank">ToolchainDemo.java</a></p>
+          <p class="code-link">See examples in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples" target="_blank">ch01/examples</a></p>
         </section>
 
         <section>
@@ -86,7 +86,7 @@
               </ul>
             </div>
           </div>
-          <p class="code-link">See compile/run flow in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/RunSequence.java" target="_blank">RunSequence.java</a></p>
+          <p class="code-link">See examples in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples" target="_blank">ch01/examples</a></p>
         </section>
 
         <section>
@@ -98,7 +98,7 @@
             <li>Use wildcard imports for related utilities but prefer explicit imports for clarity</li>
             <li><code>java.lang</code> is imported automatically; all other packages require explicit import or FQCN</li>
           </ul>
-          <p class="code-link">Package setup illustrated in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/PackageDemo.java" target="_blank">PackageDemo.java</a></p>
+          <p class="code-link">Package setup illustrated in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/NumberPicker.java" target="_blank">NumberPicker.java</a></p>
         </section>
 
         <section>
@@ -106,19 +106,19 @@
           <pre><code data-trim>
 package ch01.examples;
 
-public class ZooApp {
+public class Zoo {
     public static void main(String[] args) {
-        System.out.println("Welcome to the zoo!");
+        System.out.println("Hello World");
     }
 }
           </code></pre>
           <ul>
-            <li>Public class name must match file name (<code>ZooApp.java</code>)</li>
+            <li>Public class name must match file name (<code>Zoo.java</code>)</li>
             <li>Entry point: <code>public static void main(String[] args)</code>; args may be empty but must exist</li>
             <li>Only one public top-level class per file; additional classes are package-private</li>
             <li>Statements end with semicolons; braces define class/method blocks</li>
           </ul>
-          <p class="code-link">Run the sample in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/ZooApp.java" target="_blank">ZooApp.java</a></p>
+          <p class="code-link">Run the sample in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/Zoo.java" target="_blank">Zoo.java</a></p>
         </section>
 
         <section>
@@ -130,7 +130,7 @@ public class ZooApp {
             <li>Identifiers are case-sensitive; avoid similar-looking characters (e.g., <code>O</code> vs <code>0</code>)</li>
             <li>Use descriptive names to communicate intention</li>
           </ul>
-          <p class="code-link">Identifier examples in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/NamingRules.java" target="_blank">NamingRules.java</a></p>
+          <p class="code-link">See examples in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples" target="_blank">ch01/examples</a></p>
         </section>
 
         <section>
@@ -159,7 +159,7 @@ public class ZooApp {
             <li>Numeric literals support underscores (<code>1_000_000</code>) and binary/hex/octal prefixes</li>
             <li>Field primitives have default values; local variables must be initialised before use</li>
           </ul>
-          <p class="code-link">See literals and assignments in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/PrimitivePlayground.java" target="_blank">PrimitivePlayground.java</a></p>
+          <p class="code-link">See literals and assignments in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/Swan.java" target="_blank">Swan.java</a></p>
         </section>
 
         <section>
@@ -171,7 +171,7 @@ public class ZooApp {
             <li><code>String</code> is immutable; operations produce new instances rather than modifying existing ones</li>
             <li>Use <code>equals()</code> for logical comparison; <code>==</code> compares references</li>
           </ul>
-          <p class="code-link">Reference demos in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/ReferenceDemo.java" target="_blank">ReferenceDemo.java</a></p>
+          <p class="code-link">Reference demos in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/Swan.java" target="_blank">Swan.java</a></p>
         </section>
 
         <section>
@@ -183,7 +183,7 @@ public class ZooApp {
             <li>Array declarations may specify brackets with the type (<code>int[] values</code>) or variable name (<code>int values[]</code>)</li>
             <li>Use descriptive initial values to clarify intent</li>
           </ul>
-          <p class="code-link">See examples in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/VariableLifecycle.java" target="_blank">VariableLifecycle.java</a></p>
+          <p class="code-link">See examples in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/NameTag.java" target="_blank">NameTag.java</a></p>
         </section>
 
         <section>
@@ -195,7 +195,7 @@ public class ZooApp {
             <li>Use <code>var</code> when it improves readability, otherwise prefer explicit types</li>
             <li>Be cautious with <code>var</code> when the inferred type is not obvious (e.g., <code>var data = List.of(1, 2)</code>)</li>
           </ul>
-          <p class="code-link">Inference samples in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/VarDemo.java" target="_blank">VarDemo.java</a></p>
+          <p class="code-link">Inference samples in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/ZooVar.java" target="_blank">ZooVar.java</a></p>
         </section>
 
         <section>
@@ -207,7 +207,7 @@ public class ZooApp {
             <li>Fields (instance/static) remain available for the life of their object/class regardless of method scope</li>
             <li>Effectively final locals can be captured by lambdas and inner classes</li>
           </ul>
-          <p class="code-link">Scope behaviour shown in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/ScopeExamples.java" target="_blank">ScopeExamples.java</a></p>
+          <p class="code-link">See examples in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples" target="_blank">ch01/examples</a></p>
         </section>
 
         <section>
@@ -219,7 +219,7 @@ public class ZooApp {
             <li><code>System.gc()</code> is only a hint; the JVM decides when to reclaim memory</li>
             <li>Manage external resources (files, sockets) with <code>try-with-resources</code> or explicit close methods</li>
           </ul>
-          <p class="code-link">GC examples in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/GarbageCollectionDemo.java" target="_blank">GarbageCollectionDemo.java</a></p>
+          <p class="code-link">GC examples in <a href="../../chapters/ch01-language-basics/src/main/java/ch01/examples/Swan.java" target="_blank">Swan.java</a></p>
         </section>
 
         <section>
