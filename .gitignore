@@ -3,3 +3,22 @@ target/
 *.iml
 *.class
 .DS_Store
+# Eclipse/IDE artifacts
+.project
+.classpath
+.settings/
+
+# VS Code
+.vscode/
+
+# IntelliJ build output
+out/
+
+# Eclipse/Maven compiled output directories
+bin/
+
+# Windows explorer metadata
+Thumbs.db
+
+# Local AI tooling
+.claude/
