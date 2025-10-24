@@ -4,20 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Demonstrates initialization order concepts from Chapter 6: Class Design.
- * <p>
- * This class contains examples illustrating:
- * <ul>
- *   <li>Static initialization blocks and their execution order</li>
- *   <li>Instance initialization blocks and their execution order</li>
- *   <li>Constructor execution in inheritance hierarchies</li>
- *   <li>Order of initialization: static -> instance -> constructor</li>
- *   <li>Parent initialization occurs before child initialization</li>
- * </ul>
- * <p>
- * From Chapter 6: "Initializing Objects" and "Understanding Compiler Enhancements"
+ * Implements the Chapter 6 scenarios for "Initializing Classes", "Initializing Instances", and
+ * "Order of Initialization". Each nested type records the execution order into {@link #OUTPUT} so
+ * you can confirm the paths described in the book.
  *
- * @see <a href="https://learning.oreilly.com/library/view/ocp-oracle-certified/9781119864585/c06.xhtml">Chapter 6: Class Design</a>
+ * <p>Key takeaways:</p>
+ * <ul>
+ *   <li>Static initializers execute once per class, parent before child.</li>
+ *   <li>Instance initializers run before the constructor body every time a new object is created.</li>
+ *   <li>Constructors chain from parent to child, respecting any {@code this(...)} calls.</li>
+ *   <li>Initialization order is fixed: static → instance → constructor for each level of the
+ *       hierarchy.</li>
+ * </ul>
+ *
+ * @see <a href="https://learning.oreilly.com/library/view/ocp-oracle-certified/9781119864585/c06.xhtml">OCP Java SE 17 Study Guide – Chapter 6: Initializing Objects</a>
  */
 public final class InitializationExamples {
 

@@ -1,20 +1,20 @@
 package ch06.examples;
 
 /**
- * Demonstrates key inheritance and reference concepts from Chapter 6: Class Design.
- * <p>
- * This class contains examples illustrating:
- * <ul>
- *   <li>Basic inheritance with extends keyword</li>
- *   <li>Protected member access in subclasses</li>
- *   <li>Using the 'this' reference to resolve naming conflicts</li>
- *   <li>Using the 'super' reference to access parent class members</li>
- *   <li>Variable hiding in inheritance hierarchies</li>
- * </ul>
- * <p>
- * From Chapter 6: "Understanding Inheritance" and "Creating Classes"
+ * Mirrors the Chapter 6 walkthroughs from "Declaring a Subclass", "Accessing the this Reference",
+ * and "Calling the super Reference" so learners can observe how scope, access modifiers, and
+ * variable hiding interact across an inheritance hierarchy.
  *
- * @see <a href="https://learning.oreilly.com/library/view/ocp-oracle-certified/9781119864585/c06.xhtml">Chapter 6: Class Design</a>
+ * <p>Concepts reinforced:</p>
+ * <ul>
+ *   <li>{@code protected} members are inherited but still respect package and subclass boundaries.</li>
+ *   <li>{@code this} resolves naming conflicts by pointing at the current instance, whereas
+ *       {@code super} targets the parent portion of the object.</li>
+ *   <li>Variable hiding stores separate copies of fields with the same name at different hierarchy
+ *       levels.</li>
+ * </ul>
+ *
+ * @see <a href="https://learning.oreilly.com/library/view/ocp-oracle-certified/9781119864585/c06.xhtml">OCP Java SE 17 Study Guide – Chapter 6: Understanding Inheritance</a>
  */
 public final class InheritanceExamples {
 

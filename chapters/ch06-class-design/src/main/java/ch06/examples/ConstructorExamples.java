@@ -3,20 +3,19 @@ package ch06.examples;
 import java.util.Objects;
 
 /**
- * Demonstrates constructor concepts from Chapter 6: Class Design.
- * <p>
- * This class contains examples illustrating:
- * <ul>
- *   <li>Constructor overloading with different parameter types</li>
- *   <li>Default constructors and when Java provides them</li>
- *   <li>Calling overloaded constructors with this()</li>
- *   <li>Calling parent constructors with super()</li>
- *   <li>Constructor chaining rules and requirements</li>
- * </ul>
- * <p>
- * From Chapter 6: "Declaring Constructors"
+ * Collects the listings from Chapter 6 "Declaring Constructors" and "Calling Parent Constructors
+ * with super()". The nested types show how Java inserts default constructors, enforces chaining
+ * rules, and requires explicit super calls when the parent lacks a no-arg constructor.
  *
- * @see <a href="https://learning.oreilly.com/library/view/ocp-oracle-certified/9781119864585/c06.xhtml">Chapter 6: Class Design</a>
+ * <p>Key concepts from the chapter:</p>
+ * <ul>
+ *   <li>Each constructor must start with either {@code this(...)} or {@code super(...)}.</li>
+ *   <li>Java supplies a default no-argument constructor only when none are declared.</li>
+ *   <li>Constructor chaining cannot form cycles and {@code this(...)} must be the first statement.</li>
+ *   <li>Subclasses must invoke an explicit parent constructor when the parent defines no default.</li>
+ * </ul>
+ *
+ * @see <a href="https://learning.oreilly.com/library/view/ocp-oracle-certified/9781119864585/c06.xhtml">OCP Java SE 17 Study Guide – Chapter 6: Declaring Constructors</a>
  */
 public final class ConstructorExamples {
 

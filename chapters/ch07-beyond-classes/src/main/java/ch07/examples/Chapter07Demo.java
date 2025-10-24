@@ -2,6 +2,11 @@ package ch07.examples;
 
 import java.util.ArrayList;
 
+/**
+ * Companion launcher that stitches together several Chapter 7 examples so learners can observe the
+ * console output described in the study guide (interface polymorphism, enum behaviour, records,
+ * sealed hierarchies, nested types, and functional interfaces).
+ */
 public final class Chapter07Demo {
 
     private Chapter07Demo() {

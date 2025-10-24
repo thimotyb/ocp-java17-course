@@ -1,7 +1,9 @@
 package ch06.examples;
 
-import java.util.List;
-
+/**
+ * Convenience launcher that runs a sampling of the Chapter 6 examples so students can watch the
+ * printed output that the book describes (weights, initialization order, and polymorphic results).
+ */
 public final class Chapter06Demo {
 
     private Chapter06Demo() {
