@@ -2,6 +2,10 @@ package ch05.examples.pond.swan;
 
 import ch05.examples.pond.shore.Bird;
 
+/**
+ * Another Chapter 5 protected-access example: subclasses can reach inherited members directly and
+ * through other subclass instances, but not through a superclass-typed reference.
+ */
 public class Swan extends Bird {
 
     public String swim() {

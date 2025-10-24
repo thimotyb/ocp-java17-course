@@ -1,5 +1,9 @@
 package ch05.examples;
 
+/**
+ * Convenience launcher that stitches together the Chapter 5 code listings so learners can observe
+ * the output from the varargs, static data, and overload resolution examples in one run.
+ */
 public final class Chapter05Demo {
 
     private Chapter05Demo() {
