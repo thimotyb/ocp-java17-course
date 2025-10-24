@@ -1,5 +1,8 @@
 package ch12.examples;
 
+/**
+ * Simple driver that prints the Chapter 12 module descriptor and reflection examples.
+ */
 public final class Chapter12Demo {
 
     private Chapter12Demo() {

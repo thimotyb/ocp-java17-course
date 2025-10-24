@@ -2,6 +2,10 @@ package ch10.examples;
 
 import java.util.List;
 
+/**
+ * Simple entry point that wires together Chapter 10 stream examples so learners can inspect the
+ * output of pipelines, primitive streams, and {@link java.util.Optional} usage.
+ */
 public final class Chapter10Demo {
 
     private Chapter10Demo() {

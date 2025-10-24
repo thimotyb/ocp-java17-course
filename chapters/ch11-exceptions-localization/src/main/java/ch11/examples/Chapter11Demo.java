@@ -3,6 +3,10 @@ package ch11.examples;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Launcher that exercises the Chapter 11 exception-handling and localization snippets, printing the
+ * behaviour described in the study guide.
+ */
 public final class Chapter11Demo {
 
     private Chapter11Demo() {

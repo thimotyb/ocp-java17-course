@@ -8,13 +8,17 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Synchronization, locks, and concurrent collections.
+ * Demonstrates synchronization constructs from Chapter 13 "Managing Concurrency" including
+ * intrinsic locks, atomic variables, synchronized wrappers, and concurrent collections.
+ *
+ * @see <a href="https://learning.oreilly.com/library/view/ocp-oracle-certified/9781119864585/c13.xhtml">OCP Java SE 17 Study Guide – Chapter 13: Managing Concurrency</a>
  */
 public final class SynchronizationExamples {
 
     private SynchronizationExamples() {
     }
 
+    /** Simple synchronized counter shared across threads. */
     public static class Counter {
 
         private int count;
@@ -28,6 +32,9 @@ public final class SynchronizationExamples {
         }
     }
 
+    /**
+     * Uses {@link AtomicInteger} to safely increment across multiple threads without explicit locks.
+     */
     public static int atomicCounter(int iterations) {
         AtomicInteger atomic = new AtomicInteger();
         List<Thread> threads = new ArrayList<>();
@@ -45,6 +52,7 @@ public final class SynchronizationExamples {
         return atomic.get();
     }
 
+    /** @return synchronized list wrapper produced by {@link Collections#synchronizedList(List)}. */
     public static List<Integer> synchronizedListExample() {
         List<Integer> list = Collections.synchronizedList(new ArrayList<>());
         list.add(1);
@@ -52,6 +60,10 @@ public final class SynchronizationExamples {
         return list;
     }
 
+    /**
+     * @return {@link ConcurrentHashMap} after performing {@code putIfAbsent}, {@code computeIfPresent},
+     *     and {@code computeIfAbsent} operations.
+     */
     public static ConcurrentMap<String, Integer> concurrentMapUsage() {
         ConcurrentMap<String, Integer> map = new ConcurrentHashMap<>();
         map.putIfAbsent("lion", 1);

@@ -2,6 +2,10 @@ package ch09.examples;
 
 import java.util.List;
 
+/**
+ * Console harness that executes a sampling of Chapter 9 collection and generics snippets so learners
+ * can see the runtime effects described in the study guide.
+ */
 public final class Chapter09Demo {
 
     private Chapter09Demo() {

@@ -4,6 +4,10 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Runs a sampling of Chapter 13 concurrency utilities to highlight thread creation, executor usage,
+ * atomic counters, and parallel streams.
+ */
 public final class Chapter13Demo {
 
     private Chapter13Demo() {

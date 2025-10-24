@@ -3,6 +3,10 @@ package ch08.examples;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Simple command-line harness that wires together the Chapter 8 lambda and method-reference
+ * listings so students can observe the behaviour described in the study guide.
+ */
 public final class Chapter08Demo {
 
     private Chapter08Demo() {
