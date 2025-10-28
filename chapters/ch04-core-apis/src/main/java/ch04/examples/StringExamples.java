@@ -1,4 +1,4 @@
-package ch04.examples;
+﻿package ch04.examples;
 
 /**
  * Demonstrates core String API methods and operations covered in Chapter 4: Core APIs.
@@ -344,5 +344,60 @@ public final class StringExamples {
      */
     public static String formattedExample(String name, int orderId) {
         return String.format("Hello %s, order %d is ready", name, orderId);
+    }
+
+    /**
+     * Manual debug harness to run one example at a time.
+     *
+     * <p>Usage: edit the single assignment to {@code result} below to call the
+     * specific static method you want to inspect while debugging. Adjust
+     * parameters as needed, then run the class. This keeps the workflow simple:
+     * change one line, re-run, observe output.</p>
+     *
+     * <p>Examples (uncomment and adjust as desired):</p>
+     * <pre>
+     *   // Arrays pretty-print
+     *   result = concatenationOutputs();
+     *
+     *   // Concatenation rules and variations
+     *   result = concatenationWithVariables();
+     *   result = compoundAssignment();
+     *
+     *   // Core String APIs
+     *   result = lengthAnimals();
+     *   result = charAt(0);                // 'a'
+     *   result = indexOfExample('a');      // 0
+     *   result = indexOfExample("al");      // 4
+     *   result = indexOfExample('a', 1);   // 4
+     *   result = indexOfExample("al", 5);  // -1
+     *   result = substringFrom(3);         // "mals"
+     *   result = substringRange(3, 7);     // "mals"
+     *   result = animalsToUpper();         // "ANIMALS"
+     *   result = mixedToLower();           // "abc123"
+     *   result = equalsExample("abc");
+     *   result = equalsIgnoreCaseExample("ABC");
+     *   result = startsWithExample("a");
+     *   result = endsWithExample("c");
+     *   result = containsExample("b");
+     *   result = replaceExample('a', 'A');
+     *   result = replaceExample("a", "A");
+     *   result = isEmptyExample("");
+     *   result = isBlankExample("   ");
+     *   result = translateEscapesExample("\tTab");
+     *   result = formattedExample("Riley", 42);
+     * </pre>
+     *
+     * @param args not used
+     */
+    public static void main(String[] args) {
+        // Change this single line to the method you want to run:
+        Object result = concatenationWithVariables();
+
+        // Pretty-print arrays for convenience; otherwise print value directly
+        if (result instanceof String[]) {
+            System.out.println("Result -> " + java.util.Arrays.toString((String[]) result));
+        } else {
+            System.out.println("Result -> " + result);
+        }
     }
 }
