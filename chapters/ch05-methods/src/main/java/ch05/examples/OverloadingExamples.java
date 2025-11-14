@@ -94,6 +94,12 @@ public final class OverloadingExamples {
                 throw new Exception("negative distance");
             }
         }
+
+        public void call() {
+
+                fly((int)5, (short)5);
+        
+        }
     }
 
     /**
@@ -148,12 +154,25 @@ public final class OverloadingExamples {
             return "object";
         }
 
+        public int fly(int i) {
+            return i;
+        }
+
         /**
          * @return a list of the overload results for a {@code String} literal and an {@code int},
          *     matching the book explanation.
          */
         public List<String> evaluateCalls() {
             return List.of(fly("test"), fly(56));
+        }
+
+        public void call() {
+            StringBuffer name = new StringBuffer("Roger");
+            fly(Integer.valueOf(42)); // Autoboxing VERY EXPENSIVE
+
+
+            int k = Integer.valueOf(42).intValue(); // Unboxing
+            System.out.println(k);
         }
     }
 
@@ -179,6 +198,12 @@ public final class OverloadingExamples {
             return print("abc") + print(Arrays.asList(3))
                 + print(LocalDate.of(2019, Month.JULY, 4));
         }
+
+        public void call() {
+            print("abc");
+            print(Arrays.asList(3));
+            print(LocalDate.of(2019, Month.JULY, 4));
+        }
     }
 
     /**
@@ -187,18 +212,23 @@ public final class OverloadingExamples {
      */
     public static final class Ostrich {
 
-        public String fly(int i) {
+        /*public String fly(int i) {
             return "int";
-        }
+        }*/
 
         public String fly(long l) {
             return "long";
+        }
+
+        public void call() {
+           fly(67);
         }
     }
 
     /**
      * Demonstrates how boxing competes with exact matches. When both {@code int} and
      * {@link Integer} overloads exist, primitives choose the exact primitive signature.
+     * THIS EXAMPLE DEMONSTRATES THE SEQUENCE  exact -> widening -> boxing -> superclass
      */
     public static final class Kiwi {
 
@@ -206,9 +236,21 @@ public final class OverloadingExamples {
             return "int";
         }
 
+        public String fly(long l) {
+            return "long";
+        }
+
         public String fly(Integer numMiles) {
             return "Integer";
         }
+
+        public String fly(Object numMiles) {
+            return "Integer";
+        }
+
+        public void call() {
+            fly(67);
+         }
     }
 
     /**
