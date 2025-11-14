@@ -144,4 +144,37 @@ public final class FishTank {
 
         return output.toString();
     }
+
+    interface IAnimal{}
+    interface IWildAnimal extends IAnimal{}
+
+    void compareVariousNumbers(Number number) {
+
+        if(number instanceof Integer data ) {
+           //Integer data = (Integer)number;
+           System.out.print(data);
+           data = 10;
+        }
+     }
+
+     // THIS DOES NOT COMPILE BECAUSE OF FLOW SCOPING
+     void printIntegersOrNumbersGreaterThan5(Number number) {
+        if(number instanceof Integer data && data.compareTo(5)>0)
+           System.out.print(data);
+     }
+
+
+     void printIntegerTwice(Number number) {
+        if (number instanceof Integer data)
+        System.out.print(data.intValue());
+        System.out.print(data.intValue());  // DOES NOT COMPILE
+     }
+
+     void printOnlyIntegers(Number number) { 
+        if (!(number instanceof Integer data))
+           return;
+           
+        System.out.print(data.intValue());
+     }
+
 }
