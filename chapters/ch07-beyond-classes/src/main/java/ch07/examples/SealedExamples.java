@@ -20,6 +20,16 @@ public final class SealedExamples {
     private SealedExamples() {
     }
 
+    public static sealed class Bear permits Kodiak, Panda { }
+
+    public static final class Kodiak extends Bear { }
+
+    public static non-sealed class Panda extends Bear { }
+
+    public static sealed class BabyPanda extends Panda permits ChinesePanda { }
+
+    public static final class ChinesePanda extends BabyPanda { }
+
     /**
      * Sealed interface that limits implementations to the three permitted zoo animals described in
      * the book's example hierarchy.
