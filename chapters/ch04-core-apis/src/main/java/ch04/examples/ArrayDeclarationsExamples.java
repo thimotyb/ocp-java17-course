@@ -151,7 +151,7 @@ public final class ArrayDeclarationsExamples {
      */
     public static String[] fillNumbers() {
         var numbers = new int[10];              // Array of 10 elements
-        for (int i = 0; i < numbers.length; i++) {  // Loop from 0 to 9
+        for (int i = 0; i </*= */ numbers.length; i++) {  // Loop from 0 to 9 (UNCCOMMENT FOR AOOB EXCEPTION)
             numbers[i] = i + 5;                 // Assign values 5 through 14
         }
         return java.util.Arrays.stream(numbers).mapToObj(String::valueOf).toArray(String[]::new);
